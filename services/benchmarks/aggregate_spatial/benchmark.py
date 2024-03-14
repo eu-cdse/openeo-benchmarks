@@ -1,12 +1,16 @@
+#%%
+
 import logging
 
-from services.benchmarks.helper import setup_logging, setup_connection, submit_job, read_scenario_params, \
-    read_test_geometries
+from services.benchmarks.helper import setup_logging, setup_connection, \
+    submit_job, read_scenario_params, read_test_geometries
 
 # Set up the log formatting
 setup_logging()
 
+
 # Set up the connection with OpenEO
+
 session = setup_connection()
 
 # Read the scenario that was passed as a parameter

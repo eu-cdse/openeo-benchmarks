@@ -12,11 +12,14 @@ with open(f'./services/benchmarks/{args.service}/scenarios.json') as file:
 for scenario in scenarios:
     print(f'Executing {scenario["name"]}')
     scenario_type = scenario["type"] if "type" in scenario else ""
-    command = f'python3 -m services.benchmarks.{args.service}.benchmark ' \
-              f'-f {scenario["file"]} -n {scenario["name"]} -d {scenario["dates"]}'
+    command = f'python -m services.benchmarks.{args.service}.benchmark ' \
+              f'-f {scenario.get("file", "null")} -n {scenario.get("name", "")} -d {scenario.get("dates", "")}'
     if 'extent' in scenario:
         command += f' -e {scenario["extent"]}'
     if 'type' in scenario:
         command += f' -t {scenario["type"]}'
     print(command)
     os.system(command)
+
+
+
