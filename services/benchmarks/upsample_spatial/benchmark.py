@@ -16,8 +16,9 @@ scenario = read_scenario_params()
 # Execute tests
 logging.info('Submitting spatial upsampling job')
 base_title = f'benchmarks_{scenario["ScenarioName"]}'
-
+logging.info(scenario["bands"])
 service_ts = session \
-    .load_collection(collection_id = scenario["CollectionId"], temporal_extent = scenario["dates"], spatial_extent = scenario["extent"], bands = scenario["bands"]) \
+    .load_collection(collection_id = scenario["CollectionId"], temporal_extent = scenario["dates"], \
+                      spatial_extent = scenario["extent"], bands = scenario["bands"]) \
     .resample_spatial(resolution = 10,method ='bilinear')
 submit_job(service_ts, f'{base_title}_JSON', 'JSON')

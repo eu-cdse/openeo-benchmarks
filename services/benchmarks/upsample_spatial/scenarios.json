@@ -1,9 +1,10 @@
 [
   {
-    "CollectionId": "SENTINEL2_L2A",
-    "ScenarioName": "upsampling_nir09",
-    "dates": "2023-01-01,2023-01-30", 
+    "CollectionId": "SENTINEL2_L1C",
+    "ScenarioName": "upsampling_60m_to_10m",
+    "dates": "2023-01-01,2023-07-30", 
     "extent": "3.758216409030558,51.291835566,4.087806252,51.3927399",
-    "bands": "nir09"
+    "bands": "B01,B09,B10"  
   }
 ]
+

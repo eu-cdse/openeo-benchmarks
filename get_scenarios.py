@@ -3,7 +3,7 @@ import os
 
 def command_from_scenario(NameBenchmark: str, ParamsBenchmark: dict) -> list:
     """
-    Build a command based on the name and parameters of a unit test.
+    Build a command based on the name and parameters of a benchmark test.
 
     Args:
         NameBenchmark (str): The name of the service for which the benchmark is being executed.

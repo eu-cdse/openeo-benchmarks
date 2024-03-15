@@ -16,6 +16,7 @@ logging.info('Submitting timeseries job')
 base_title = f'benchmarks_timeseries_{scenario["ScenarioName"]}'
 
 service_ts = session \
-    .load_collection(collection_id = scenario["CollectionId"], temporal_extent = scenario["dates"], spatial_extent = scenario["extent"]) \
+    .load_collection(collection_id = scenario["CollectionId"], temporal_extent = scenario["dates"],\
+                     spatial_extent = scenario["extent"]) \
     .reduce_dimension(dimension="t", reducer="mean")
 submit_job(service_ts, f'{base_title}_GTiff', 'GTiff')

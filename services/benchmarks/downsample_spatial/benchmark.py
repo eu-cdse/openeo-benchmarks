@@ -19,6 +19,7 @@ logging.info('Submitting spatial downsampling job')
 base_title = f'benchmarks_{scenario["ScenarioName"]}'
 
 service_ts = session \
-    .load_collection(collection_id = scenario["CollectionId"], temporal_extent = scenario["dates"], spatial_extent = scenario["extent"], bands = scenario["bands"]) \
+    .load_collection(collection_id = scenario["CollectionId"], temporal_extent = scenario["dates"],\
+                     spatial_extent = scenario["extent"], bands = scenario["bands"]) \
     .resample_spatial(resolution = 60,method ='mean')
 submit_job(service_ts, f'{base_title}_JSON', 'JSON')

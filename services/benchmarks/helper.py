@@ -105,6 +105,6 @@ def read_scenario_params() -> dict:
         'CollectionId': args.CollectionId,
         'dates': args.dates.split(',') if args.dates else None,
         'extent': extent,
-        'bands': args.bands,
+        'bands': args.bands.split(',') if args.bands else None,
         'type': args.type
     }
