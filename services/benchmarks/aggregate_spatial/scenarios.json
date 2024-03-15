@@ -1,7 +1,11 @@
 [
   {
     "file": "alps_100_polygons.geojson",
-    "name": "100_polygon_aggregation",
+    "ScenarioName": "aggregate_100_polygons",
+    "CollectionId": "SENTINEL2_L1C",
+    "bands": "B04",
     "dates": "2020-01-01,2020-01-31"
   }
 ]
+
+

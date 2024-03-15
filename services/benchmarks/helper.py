@@ -72,35 +72,39 @@ def submit_job(datacube, title, output_format) -> None:
     logging.info(f'{title} - Submitted job with ID {job.job_id}')
 
 
-def read_scenario_params(type_required = False, extent_required=False):
+def read_scenario_params() -> dict:
+    """
+    Parse command-line arguments to extract scenario parameters.
+    In this way multiple benchmarks can be run from a single scneario file
+
+    Returns:
+        dict: A dictionary containing scenario parameters:
+    """
     parser = argparse.ArgumentParser(
         description="Execute a benchmark"
     )
-    parser.add_argument("-f", "--file", type=str, required=True,
-                        help="Name of the file to be processed")
-
-    parser.add_argument("-n", "--name", type=str, required=True,
-                        help="Name of the job to create")
-
-    parser.add_argument("-d", "--dates", type=str, required=True,
-                        help="Dates for which to execute the benchmark")
-
-    parser.add_argument("-t", "--type", type=str, required=type_required,
-                        help="Type of product to process")
-
-    parser.add_argument("-e", "--extent", type=str, required=extent_required,
-                        help="Extent for which to execute the benchmark")
+    parser.add_argument("-c", "--CollectionId", type=str, help="Name of the collectionID")
+    parser.add_argument("-s", "--ScenarioName", type=str, help="Name of the used scenario")
+    parser.add_argument("-f", "--file", type=str, help="Name of the file to be processed")
+    parser.add_argument("-d", "--dates", type=str, help="Dates for which to execute the benchmark")
+    parser.add_argument("-t", "--type", type=str, help="Type of product to process")
+    parser.add_argument("-e", "--extent", type=str, help="Extent for which to execute the benchmark")
+    parser.add_argument("-b", "--bands", type=str, help="Extent for which to execute the benchmark")
 
     args = parser.parse_args()
 
+    # Process extent argument if provided
     extent = args.extent
     if extent is not None and extent != "null":
         extent = [float(i) for i in args.extent.split(',')]
         extent = dict(zip(["west", "south", "east", "north"], extent))
+
     return {
         'file': args.file,
-        'name': args.name,
-        'dates': args.dates.split(','),
+        'ScenarioName': args.ScenarioName,
+        'CollectionId': args.CollectionId,
+        'dates': args.dates.split(',') if args.dates else None,
         'extent': extent,
+        'bands': args.bands,
         'type': args.type
     }

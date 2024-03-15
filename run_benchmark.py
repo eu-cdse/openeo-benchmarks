@@ -1,6 +1,7 @@
 import argparse
 import json
-import os
+from get_scenarios import execute_benchmark
+
 
 parser = argparse.ArgumentParser(description = "Execute a benchmark")
 parser.add_argument("service", type = str, help = "Service for which to run the benchmark.")
@@ -10,16 +11,7 @@ with open(f'./services/benchmarks/{args.service}/scenarios.json') as file:
     scenarios = json.load(file)
 
 for scenario in scenarios:
-    print(f'Executing {scenario["name"]}')
-    scenario_type = scenario["type"] if "type" in scenario else ""
-    command = f'python -m services.benchmarks.{args.service}.benchmark ' \
-              f'-f {scenario.get("file", "null")} -n {scenario.get("name", "")} -d {scenario.get("dates", "")}'
-    if 'extent' in scenario:
-        command += f' -e {scenario["extent"]}'
-    if 'type' in scenario:
-        command += f' -t {scenario["type"]}'
-    print(command)
-    os.system(command)
+    execute_benchmark(args.service, scenario)
 
 
 

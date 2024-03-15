@@ -1,24 +1,44 @@
-# This file is automatically run by a cron job.
-import argparse
-import json
+import logging
+import os
 
-parser = argparse.ArgumentParser(
-    description="Execute a CDSE benchmark"
-)
-parser.add_argument("service", type=str,
-                    help="Service for which to retrieve the scenarios")
+def command_from_scenario(NameBenchmark: str, ParamsBenchmark: dict) -> list:
+    """
+    Build a command based on the name and parameters of a unit test.
 
-args = parser.parse_args()
-#########
+    Args:
+        NameBenchmark (str): The name of the service for which the benchmark is being executed.
+        ParamsBenchmark (dict): A dictionary containing scenario parameters like file, name, dates, extent, and type.
 
-with open(f'./services/benchmarks/{args.service}/scenarios.json') as file:
-    scenarios = json.load(file)
-    for scenario in scenarios:
-        if 'type' not in scenario:
-            scenario['type'] = 'null'
-        if 'extent' not in scenario:
-            scenario['extent'] = 'null'
-        if 'file' not in scenario:
-            scenario['file'] = 'null'
-    print(json.dumps(scenarios))
-    file.close()
+    Returns:
+        list: A list of command parts.
+    """
+    command_parts = ['python', '-m', f'services.benchmarks.{NameBenchmark}.benchmark']
+
+    mappings = {
+        "file": "-f",
+        "ScenarioName": "-s",
+        "CollectionId": "-c",
+        "dates": "-d",
+        "extent": "-e",
+        "bands": "-b",
+        "type": "-t"
+    }
+
+    for key, value in ParamsBenchmark.items():
+        if value is not None:
+            command_parts.extend([mappings[key], value])
+
+    return command_parts
+
+def execute_benchmark(NameBenchmark: str, ParamsBenchmark: dict):
+    """
+    Execute the benchmark scenario for the given service.
+
+    Args:
+        NameBenchmark (str): The name of the service for which the benchmark is being executed.
+        ParamsBenchmark (dict): A dictionary containing scenario parameters like file, name, dates, extent, and type.
+    """
+    command = command_from_scenario(NameBenchmark, ParamsBenchmark)
+    logging.info(f'Executing {" ".join(command)}')
+    os.system(" ".join(command))
+
