@@ -33,15 +33,6 @@ def setup_connection() -> Connection:
     logging.debug(f'Setting up connection with OpenEO Creodias backend')
     return openeo.connect('openeo.creo.vito.be').authenticate_oidc()
 
-def setup_debug_connection() -> Connection:
-    """
-    Setup a connection with an OpenEO backend and authenticate the user
-    :return: Connection object to OpenEO
-    """
-    logging.debug(f'Setting up connection with OpenEO Creodias backend')
-    return openeo.connect('https://openeo.dataspace.copernicus.eu/').authenticate_oidc()
-
-
 
 def read_test_geometries(filename) -> dict:
     """

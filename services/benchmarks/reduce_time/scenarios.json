@@ -1,8 +1,0 @@
-[
-  {
-    "ScenarioName": "basic_timeseries",
-    "CollectionId": "SENTINEL2_L2A",
-    "dates": "2020-01-01,2020-07-31",
-    "extent": "3.758216409030558,51.291835566,4.087806252,51.3927399"
-  }
-]
