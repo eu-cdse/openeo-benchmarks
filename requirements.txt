@@ -1,4 +1,0 @@
-matplotlib~=3.7.1
-pandas~=2.0.0
-openeo>=0.15.0
-geojson~=3.0.1
