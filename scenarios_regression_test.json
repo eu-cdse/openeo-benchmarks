@@ -8,7 +8,7 @@
     },
 
     {
-      "scenario_name": "apply_filter",
+      "scenario_name": "apply_spatial_kernel",
       "collection_id": "SENTINEL2_L2A",
       "bands": ["B02"],
       "temporal_extent": ["2020-01-01", "2020-07-31"],
@@ -21,7 +21,7 @@
     },
 
     {
-      "scenario_name": "downsampling",
+      "scenario_name": "downsample_spatial",
       "collection_id": "SENTINEL2_L2A",
       "bands": ["B02", "B03", "B04"],
       "temporal_extent": ["2020-01-01", "2020-07-31"],
@@ -42,7 +42,7 @@
     },
 
     {
-      "scenario_name": "time_reduction",
+      "scenario_name": "reduce_time",
       "collection_id": "SENTINEL2_L2A",
       "bands": ["B02", "B03"],
       "temporal_extent": ["2020-01-01", "2020-07-31" ],
@@ -50,7 +50,7 @@
     },
     
     {
-      "scenario_name": "upsampling",
+      "scenario_name": "upsample_spatial",
       "collection_id": "SENTINEL2_L1C",
       "bands": ["B01", "B09", "B10"],
       "temporal_extent": ["2020-01-01", "2020-12-31"],

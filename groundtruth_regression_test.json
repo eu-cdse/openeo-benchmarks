@@ -24,7 +24,7 @@
     },
 
     {
-      "scenario_name": "apply_filter",
+      "scenario_name": "apply_spatial_kernel",
       "reference_data": {
         "B02": {
           "mean": -344918049.5362585,
@@ -39,7 +39,7 @@
     },
 
     {
-      "scenario_name": "downsampling",
+      "scenario_name": "downsample_spatial",
       "reference_data": {
         "B02": {
           "mean": 3504.03173828125,
@@ -95,7 +95,7 @@
       }
     },
     {
-      "scenario_name": "time_reduction",
+      "scenario_name": "reduce_time",
       "reference_data": {
         "B02": {
           "mean": 3396.5595703125,
@@ -119,7 +119,7 @@
     },
 
     {
-      "scenario_name": "upsampling",
+      "scenario_name": "upsample_spatial",
       "reference_data": {
         "B01": {
           "mean": 3561.341796875,

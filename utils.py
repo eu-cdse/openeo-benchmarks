@@ -181,7 +181,9 @@ def execute_and_assert(cube: openeo.DataCube,
     try:
         cube.execute_batch(output_path,
                            title=scenario_name,
-                           description='benchmarking-creo')
+                           description='benchmarking-creo', 
+                           job_options={ 'driver-memory': '1g' }
+                           )
 
         output_cube = xr.open_dataset(output_path)
         output_band_stats = calculate_band_statistics(output_cube)

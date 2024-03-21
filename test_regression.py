@@ -14,7 +14,7 @@ def test_apply_kernel(auth_connection, tmp_path):
 
     # Define scenario parameters
     # Load scenario parameters
-    scenario_name = "apply_filter"
+    scenario_name = "apply_spatial_kernel"
     params = extract_scenario_parameters(scenario_name)
     
     # Set up output directory and path
@@ -72,7 +72,7 @@ def test_aggregate_spatial(auth_connection, tmp_path):
 def test_downsample_spatial(auth_connection, tmp_path):
 
     # Define scenario parameters
-    scenario_name = "downsampling"
+    scenario_name = "downsample_spatial"
     params = extract_scenario_parameters(scenario_name)
 
     # Set up output directory and path
@@ -98,7 +98,7 @@ def test_downsample_spatial(auth_connection, tmp_path):
 def test_upsample_spatial(auth_connection, tmp_path):
 
     # Define scenario parameters
-    scenario_name = "upsampling"
+    scenario_name = "upsample_spatial"
     params = extract_scenario_parameters(scenario_name)
 
     # Set up output directory and path
@@ -124,7 +124,7 @@ def test_upsample_spatial(auth_connection, tmp_path):
 def test_reduce_time(auth_connection, tmp_path):
 
     # Define scenario parameters
-    scenario_name = "time_reduction"
+    scenario_name = "reduce_time"
     params = extract_scenario_parameters(scenario_name)
 
     # Set up output directory and path
@@ -184,6 +184,3 @@ def test_mask_scl(auth_connection, tmp_path):
     
     
     
-
-
-
