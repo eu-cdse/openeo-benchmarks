@@ -8,7 +8,7 @@ import json
 import openeo
 from typing import Union
 from pathlib import Path
-
+import pytest
 
 def extract_test_geometries(filename) -> dict:
     """
@@ -46,6 +46,55 @@ def extract_scenario_parameters(scenario_name: str) -> dict:
     
     raise ValueError(f"No scenario parameters found for scenario '{scenario_name}' in file '{scenario_file}'.")
 
+
+def extract_reference_band_statistics(scenario_name: str) -> dict:
+    """
+    Loads reference data from a JSON file for a specific scenario.
+
+    Parameters:
+        reference_file (str): The path to the JSON file containing the reference statistics for all scenarios.
+        scenario_name (str): The name of the scenario for which reference data is needed.
+
+    Returns:
+        dict: The reference data for the specified scenario.
+    """
+    reference_file = 'groundtruth_regression_test.json'
+
+    with open(reference_file, 'r') as file:
+        all_reference_data = json.load(file)
+    
+    for scenario_data in all_reference_data:
+        if scenario_data['scenario_name'] == scenario_name:
+            return scenario_data['reference_data']
+    
+    raise ValueError(f"No reference data found for scenario '{scenario_name}' in file '{reference_file}'.")
+    
+
+def compare_band_statistics(output_band_stats: dict, groundtruth_band_dict: dict, tolerance: float) -> None:
+    """
+    Compares the statistics of different bands in the output against the reference data.
+
+    Parameters:
+        output_band_stats (dict): The output dictionary containing band statistics to be compared.
+        groundtruth_band_dict (dict): The reference dictionary containing expected band statistics.
+        tolerance (float): Tolerance value for comparing values.
+
+    Returns:
+        None
+    """
+    for output_band_name, output_band_stats in output_band_stats.items():
+        if output_band_name not in groundtruth_band_dict:
+            print(f"Warning: Band '{output_band_name}' not found in reference.")
+            continue
+
+        gt_band_stats = groundtruth_band_dict[output_band_name]
+        for stat, gt_value in gt_band_stats.items():
+            if stat not in output_band_stats:
+                print(f"Warning: Statistic '{stat}' not found for band '{output_band_name}' in output.")
+                continue
+
+            output_stat = output_band_stats[stat]
+            assert output_stat == pytest.approx(gt_value, rel=tolerance)
 
 def calculate_band_statistics(hypercube: xr.Dataset) -> dict:
     """
@@ -88,58 +137,6 @@ def calculate_band_statistics(hypercube: xr.Dataset) -> dict:
 
     return statistics
 
-
-def extract_reference_band_statistics(scenario_name: str) -> dict:
-    """
-    Loads reference data from a JSON file for a specific scenario.
-
-    Parameters:
-        reference_file (str): The path to the JSON file containing the reference statistics for all scenarios.
-        scenario_name (str): The name of the scenario for which reference data is needed.
-
-    Returns:
-        dict: The reference data for the specified scenario.
-    """
-    reference_file = 'groundtruth_regression_test.json'
-
-    with open(reference_file, 'r') as file:
-        all_reference_data = json.load(file)
-    
-    for scenario_data in all_reference_data:
-        if scenario_data['scenario_name'] == scenario_name:
-            return scenario_data['reference_data']
-    
-    raise ValueError(f"No reference data found for scenario '{scenario_name}' in file '{reference_file}'.")
-    
-
-def compare_band_statistics(output_band_stats: dict, reference_band_stats: dict, tolerance: float) -> None:
-    """
-    Compares the statistics of different bands in the output against the reference data.
-
-    Parameters:
-        output_band_stats (dict): The output dictionary containing band statistics to be compared.
-        reference_band_stats (dict): The reference dictionary containing expected band statistics.
-        tolerance (float): Tolerance value for comparing values.
-
-    Returns:
-        None
-    """
-    for band_name, output_stats in output_band_stats.items():
-        if band_name not in reference_band_stats:
-            print(f"Warning: Band '{band_name}' not found in reference.")
-            continue
-
-        ref_band_stats = reference_band_stats[band_name]
-        for stat, ref_value in ref_band_stats.items():
-            if stat not in output_stats:
-                print(f"Warning: Statistic '{stat}' not found for band '{band_name}' in output.")
-                continue
-
-            gen_value = output_stats[stat]
-            if abs(gen_value - ref_value) > tolerance:
-                print(f"Assertion failed: Band '{band_name}', Statistic '{stat}'. Expected: {ref_value}, Actual: {gen_value}")
-
-
 def assert_band_statistics(output_band_stats: dict, scenario_name: str, tolerance: float = 0.01) -> None:
     """
     Asserts the output band statistics against a reference dictionary stored in a JSON file with tolerance.
@@ -153,8 +150,8 @@ def assert_band_statistics(output_band_stats: dict, scenario_name: str, toleranc
         None
     """
     try:
-        reference_band_stats = extract_reference_band_statistics(scenario_name)
-        compare_band_statistics(output_band_stats, reference_band_stats, tolerance)
+        groundtruth_band_stats = extract_reference_band_statistics(scenario_name)
+        compare_band_statistics(output_band_stats, groundtruth_band_stats, tolerance)
     except FileNotFoundError:
         print(f"Error: Reference file '{scenario_name}' not found.")
     except json.JSONDecodeError:
