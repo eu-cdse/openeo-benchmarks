@@ -1,0 +1,59 @@
+[
+    {
+      "scenario_name": "aggregate_polygons",
+      "collection_id": "SENTINEL2_L1C",
+      "bands": ["B02", "B03"],
+      "temporal_extent": ["2020-01-01", "2020-05-31"],
+      "file_name": "alps_100_polygons.geojson"
+    },
+
+    {
+      "scenario_name": "apply_filter",
+      "collection_id": "SENTINEL2_L2A",
+      "bands": ["B02"],
+      "temporal_extent": ["2020-01-01", "2020-07-31"],
+      "spatial_extent": {
+        "west": 4.34,
+        "south": 51.17,
+        "east": 4.50,
+        "north": 51.27
+      }
+    },
+
+    {
+      "scenario_name": "downsampling",
+      "collection_id": "SENTINEL2_L2A",
+      "bands": ["B02", "B03", "B04"],
+      "temporal_extent": ["2020-01-01", "2020-07-31"],
+      "spatial_extent": {"west": 4.3443, "south": 51.1690, "east": 4.5000, "north": 51.2652}
+    },
+
+    {
+      "scenario_name": "mask_scl",
+      "collection_id": "SENTINEL2_L2A",
+      "bands": ["B05", "B06", "SCL"],
+      "temporal_extent": ["2020-01-01", "2020-12-31"],
+      "spatial_extent": {
+        "west": 4.3443,
+        "south": 51.1690,
+        "east": 4.5000,
+        "north": 51.2652
+      }
+    },
+
+    {
+      "scenario_name": "time_reduction",
+      "collection_id": "SENTINEL2_L2A",
+      "bands": ["B02", "B03"],
+      "temporal_extent": ["2020-01-01", "2020-07-31" ],
+      "spatial_extent": {"west": 4.3443, "south": 51.1690, "east": 4.5000, "north": 51.2652}
+    },
+    
+    {
+      "scenario_name": "upsampling",
+      "collection_id": "SENTINEL2_L1C",
+      "bands": ["B01", "B09", "B10"],
+      "temporal_extent": ["2020-01-01", "2020-12-31"],
+      "spatial_extent": {"west": 4.3443, "south": 51.1690, "east": 4.5000, "north": 51.2652}
+    }
+  ]

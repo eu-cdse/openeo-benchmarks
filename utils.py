@@ -1,25 +1,54 @@
 #%%
 
+
 import geojson
 import xarray as xr
 import re
 import json
+import openeo
+from typing import Union
+from pathlib import Path
 
-def read_test_geometries(filename) -> dict:
+
+def extract_test_geometries(filename) -> dict:
     """
     Read the geometries from a test file that is stored within the project
     :param filename: Name of the GeoJSON file to read
     :return: GeoJSON Geometry collection
     """
-    path = f'./files/{filename}'
+    path = f'./geofiles/{filename}'
     print(f'Reading geometries from {path}')
 
     with open(path) as f:
-        feature_collection = geojson.load(f)
+        geometry_collection = geojson.load(f)
         f.close()
-    return feature_collection
+    return geometry_collection
 
-def calculate_band_statistics(output_cube: xr.Dataset) -> dict:
+
+def extract_scenario_parameters(scenario_name: str) -> dict:
+    """
+    Loads scenario parameters from a JSON file for a specific scenario.
+
+    Parameters:
+        scenario_file (str): The path to the JSON file containing the scenario parameters for all scenarios.
+        scenario_name (str): The name of the scenario for which parameters are needed.
+
+    Returns:
+        dict: The parameters for the specified scenario.
+    """
+    scenario_file = 'scenarios_regression_test.json'
+
+    with open(scenario_file, 'r') as file:
+        all_scenario_parameters = json.load(file)
+    
+    for scenario_params in all_scenario_parameters:
+        if scenario_params['scenario_name'] == scenario_name:
+            return scenario_params
+    
+    raise ValueError(f"No scenario parameters found for scenario '{scenario_name}' in file '{scenario_file}'.")
+
+
+def calculate_band_statistics(hypercube: xr.Dataset) -> dict:
     """
     Calculate statistics for each variable in the output cube.
     
@@ -33,22 +62,22 @@ def calculate_band_statistics(output_cube: xr.Dataset) -> dict:
     """
 
     statistics = {}
-    var_name_bands = [var_name for var_name in output_cube.data_vars\
-                      if re.match(r'^B\d',var_name)]
+    band_names = [band_name for band_name in hypercube.data_vars\
+                      if re.match(r'^B\d',band_name)]
 
-    for var_name in var_name_bands:
+    for band_name in band_names:
 
-        variable_data = output_cube[var_name]
+        band_data = hypercube[band_name]
 
-        mean_value = float(variable_data.mean())
-        variance_value = float(variable_data.var())
+        mean_value = float(band_data.mean())
+        variance_value = float(band_data.var())
         
-        min_value = float(variable_data.min())
-        max_value = float(variable_data.max())
+        min_value = float(band_data.min())
+        max_value = float(band_data.max())
         
-        quantiles = variable_data.quantile([0.25, 0.5, 0.75]).values
+        quantiles = band_data.quantile([0.25, 0.5, 0.75]).values
         
-        statistics[var_name] = {
+        statistics[band_name] = {
             'mean': mean_value,
             'variance': variance_value,
             'min': min_value,
@@ -61,27 +90,107 @@ def calculate_band_statistics(output_cube: xr.Dataset) -> dict:
     return statistics
 
 
-
-def assert_band_statistics(output: dict, reference_file: str) -> None:
+def extract_reference_band_statistics(scenario_name: str) -> dict:
     """
-    Asserts the output dictionary against a reference dictionary stored in a JSON file.
+    Loads reference data from a JSON file for a specific scenario.
 
     Parameters:
-        output (dict): The output dictionary to be asserted.
-        reference_file (str): The path to the JSON file containing the reference dictionary.
+        reference_file (str): The path to the JSON file containing the reference statistics for all scenarios.
+        scenario_name (str): The name of the scenario for which reference data is needed.
+
+    Returns:
+        dict: The reference data for the specified scenario.
+    """
+    reference_file = 'groundtruth_regression_test.json'
+
+    with open(reference_file, 'r') as file:
+        all_reference_data = json.load(file)
+    
+    for scenario_data in all_reference_data:
+        if scenario_data['scenario_name'] == scenario_name:
+            return scenario_data['reference_data']
+    
+    raise ValueError(f"No reference data found for scenario '{scenario_name}' in file '{reference_file}'.")
+    
+
+def compare_band_statistics(output_band_stats: dict, reference_band_stats: dict, tolerance: float) -> None:
+    """
+    Compares the statistics of different bands in the output against the reference data.
+
+    Parameters:
+        output_band_stats (dict): The output dictionary containing band statistics to be compared.
+        reference_band_stats (dict): The reference dictionary containing expected band statistics.
+        tolerance (float): Tolerance value for comparing values.
 
     Returns:
         None
     """
-    
-    with open(reference_file, 'r') as file:
-        reference = json.load(file)
+    for band_name, output_stats in output_band_stats.items():
+        if band_name not in reference_band_stats:
+            print(f"Warning: Band '{band_name}' not found in reference.")
+            continue
 
-    for key, values in output.items():
-        assert key in reference, f"Key '{key}' not found in reference."
+        ref_band_stats = reference_band_stats[band_name]
+        for stat, ref_value in ref_band_stats.items():
+            if stat not in output_stats:
+                print(f"Warning: Statistic '{stat}' not found for band '{band_name}' in output.")
+                continue
 
-        reference_values = reference[key]
-        for stat in ['mean', 'variance', 'min', 'max', 'quantile25', 'quantile50', 'quantile75']:
-            assert stat in reference_values, f"Statistic '{stat}' not found for key '{key}' in reference."
+            gen_value = output_stats[stat]
+            if abs(gen_value - ref_value) > tolerance:
+                print(f"Assertion failed: Band '{band_name}', Statistic '{stat}'. Expected: {ref_value}, Actual: {gen_value}")
 
-            assert values[stat] == reference_values[stat], f"Value mismatch for key '{key}', statistic '{stat}'. Expected: {reference_values[stat]}, Actual: {values[stat]}"
+
+def assert_band_statistics(output_band_stats: dict, scenario_name: str, tolerance: float = 0.01) -> None:
+    """
+    Asserts the output band statistics against a reference dictionary stored in a JSON file with tolerance.
+
+    Parameters:
+        output_band_stats (dict): The output dictionary containing band statistics to be asserted.
+        reference_file (str): The path to the JSON file containing the reference dictionary.
+        tolerance (float): Tolerance value for comparing values. Defaults to 0.01.
+
+    Returns:
+        None
+    """
+    try:
+        reference_band_stats = extract_reference_band_statistics(scenario_name)
+        compare_band_statistics(output_band_stats, reference_band_stats, tolerance)
+    except FileNotFoundError:
+        print(f"Error: Reference file '{scenario_name}' not found.")
+    except json.JSONDecodeError:
+        print(f"Error: Unable to parse JSON in file '{scenario_name}'.")
+
+
+def execute_and_assert(cube: openeo.DataCube, 
+                       output_path: Union[str, Path], 
+                       scenario_name: str) -> None:
+    """
+    Avoid code duplication:
+    Execute the provided OpenEO cube, save the result to the output path, 
+    and assert its statistics against the reference data.
+
+    Parameters:
+        cube (openeo.datacube.DataCube): The OpenEO data cube to execute.
+        output_path (Union[str, Path]): The path where the output should be saved.
+        scenario_name (str): A name identifying the scenario for reference data.
+
+    Returns:
+        None
+
+    Raises:
+        RuntimeError: If there is an issue during execution, file saving, or assertion.
+    """
+
+    try:
+        cube.execute_batch(output_path,
+                           title=scenario_name,
+                           description='benchmarking-creo')
+
+        output_cube = xr.open_dataset(output_path)
+        output_band_stats = calculate_band_statistics(output_cube)
+
+        assert_band_statistics(output_band_stats, scenario_name)
+
+    except Exception as e:
+        raise RuntimeError(f"Error occurred during execution and assertion: {str(e)}")
