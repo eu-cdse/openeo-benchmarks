@@ -30,7 +30,6 @@ def extract_scenario_parameters(scenario_name: str) -> dict:
     Loads scenario parameters from a JSON file for a specific scenario.
 
     Parameters:
-        scenario_file (str): The path to the JSON file containing the scenario parameters for all scenarios.
         scenario_name (str): The name of the scenario for which parameters are needed.
 
     Returns:
