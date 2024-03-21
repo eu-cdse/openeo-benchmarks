@@ -139,12 +139,6 @@ def test_reduce_time(auth_connection, tmp_path):
     ).reduce_dimension(
         dimension="t",
         reducer="mean")
-    
-    cube.execute_batch(
-        output_path,
-        title=scenario_name,
-        description='benchmarking-creo'
-    )
 
     # Excecute and assert
     try:
