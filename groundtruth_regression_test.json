@@ -91,6 +91,15 @@
           "quantile25": 1600.0,
           "quantile50": 2801.0,
           "quantile75": 5994.0
+        },
+        "SCL": {
+          "mean": 7.293013572692871,
+          "variance": 4.617444038391113,
+          "min": 2.0,
+          "max": 11.0,
+          "quantile25": 5.0,
+          "quantile50": 8.0,
+          "quantile75": 9.0
         }
       }
     },

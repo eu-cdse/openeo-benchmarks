@@ -10,6 +10,8 @@ from openeo.capabilities import ComparableVersion
 
 _log = logging.getLogger(__name__)
 
+os.environ["ENDPOINT"] = "https://openeo.dataspace.copernicus.eu/"
+
 def get_openeo_base_url(version: str = "1.1.0"):
     try:
         endpoint = os.environ["ENDPOINT"].rstrip("/")
@@ -18,17 +20,6 @@ def get_openeo_base_url(version: str = "1.1.0"):
                            " with URL pointing to OpenEO backend to test against"
                            " (e.g. 'http://localhost:8080/' or 'http://openeo-dev.vgt.vito.be/')")
     return "{e}/openeo/{v}".format(e=endpoint.rstrip("/"), v=version)
-
-
-def get_tsservice_base_url():
-    tsservice_endpoint = os.environ.get("TSSERVICE_ENDPOINT")
-
-    if not tsservice_endpoint:
-        raise RuntimeError("Environment variable 'TSSERVICE_ENDPOINT' should be set"
-                           " with URL pointing to OpenEO/tsservice backend to test against"
-                           " (e.g. 'http://localhost:8155/')")
-
-    return tsservice_endpoint
 
 
 @pytest.fixture(params=[
@@ -60,24 +51,6 @@ def connection(api_base_url, requests_session) -> openeo.Connection:
     return openeo.connect(api_base_url, session=requests_session)
 
 
-@pytest.fixture
-def connection100(requests_session) -> openeo.Connection:
-    return openeo.connect(get_openeo_base_url("1.0.0"), session=requests_session)
-
-
-
-def _redact(x: Any) -> Any:
-    """Helper to redact sensitive items in nested dictionaries."""
-
-    def is_sensitive_key(key: Any) -> bool:
-        return isinstance(key, str) and any(s in key.lower() for s in {"secret", "token", "password"})
-
-    if isinstance(x, dict):
-        return {k: "-redacted-" if is_sensitive_key(k) and v else _redact(v) for k, v in x.items()}
-    else:
-        return x
-
-
 # TODO #6 larger scope than "function" for this fixture?
 # TODO #6 better name for this fixture?
 @pytest.fixture
@@ -98,8 +71,3 @@ def auth_connection(connection, capfd) -> openeo.Connection:
         connection.authenticate_oidc(max_poll_time=max_poll_time)
     return connection
 
-
-
-@pytest.fixture
-def tsservice_base_url():
-    return get_tsservice_base_url()

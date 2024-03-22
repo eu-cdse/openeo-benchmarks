@@ -5,20 +5,17 @@ from pathlib import Path
 import numpy as np
 import os
 
-from utils import extract_test_geometries, extract_scenario_parameters, execute_and_assert
-
-os.environ["ENDPOINT"] = "https://openeo.dataspace.copernicus.eu/"
+from utils import extract_test_geometries, execute_and_assert
 
 
 def test_apply_kernel(auth_connection, tmp_path):
 
     # Define scenario parameters
     # Load scenario parameters
-    scenario_name = "apply_spatial_kernel"
-    params = extract_scenario_parameters(scenario_name)
+    scenario_name = 'apply_spatial_kernel'
     
     # Set up output directory and path
-    output_path = Path(tmp_path) / f"{scenario_name}.nc"
+    output_path = tmp_path / f'{scenario_name}.nc'
 
     # Dummy kernel
     filter_window = np.ones([11, 11])
@@ -26,155 +23,140 @@ def test_apply_kernel(auth_connection, tmp_path):
 
     # Load collection, and set up progress graph
     cube = auth_connection.load_collection(
-        collection_id=params['collection_id'],
-        temporal_extent=params['temporal_extent'],
-        spatial_extent=params['spatial_extent'],
-        bands=params['bands']
+        collection_id='SENTINEL2_L2A',
+        temporal_extent=['2020-01-01', '2020-07-31'],
+        spatial_extent={'west': 4.34,'south': 51.17,'east': 4.50,'north': 51.27},
+        bands=['B02']
     ).apply_kernel(
         kernel=filter_window,
         factor=factor)
     
+    
     # Excecute and Assert
-    try:
-        execute_and_assert(cube, output_path, scenario_name)
-    except RuntimeError as e:
-        pytest.fail(str(e))
+    execute_and_assert(cube, output_path, scenario_name)
+
     
 
 def test_aggregate_spatial(auth_connection, tmp_path):
 
     # Define scenario parameters
-    scenario_name = "aggregate_polygons"
-    params = extract_scenario_parameters(scenario_name)
+    scenario_name = 'aggregate_polygons'
 
     # Set up output directory and path
-    output_path = Path(tmp_path) / f"{scenario_name}.nc"
+    output_path = tmp_path / f'{scenario_name}.nc'
 
     # Get test geometries
-    geometries = extract_test_geometries(params['file_name'])
+    geometries = extract_test_geometries(['alps_100_polygons.geojson'])
     
     # Load collection, and set up progress graph
     cube = auth_connection.load_collection(
-        collection_id=params['collection_id'],
-        temporal_extent=params['temporal_extent'],
-        bands=params['bands']
+        collection_id='SENTINEL2_L1C',
+        temporal_extent=['2020-01-01', '2020-05-31'],
+        bands=['B02', 'B03']
     ).aggregate_spatial(
         geometries=geometries,
-        reducer="mean")
+        reducer='mean')
     
     # Excecute and assert
-    try:
-        execute_and_assert(cube, output_path, scenario_name)
-    except RuntimeError as e:
-        pytest.fail(str(e))
+    execute_and_assert(cube, output_path, scenario_name)
+
 
 
 def test_downsample_spatial(auth_connection, tmp_path):
 
     # Define scenario parameters
-    scenario_name = "downsample_spatial"
-    params = extract_scenario_parameters(scenario_name)
+    scenario_name = 'downsample_spatial'
 
     # Set up output directory and path
-    output_path = Path(tmp_path) / f"{scenario_name}.nc"
+    output_path = tmp_path / f'{scenario_name}.nc'
 
     # Load collection, and set up progress graph
     cube = auth_connection.load_collection(
-        collection_id=params['collection_id'],
-        temporal_extent=params['temporal_extent'],
-        spatial_extent=params['spatial_extent'],
-        bands=params['bands']
+        collection_id='SENTINEL2_L2A',
+        temporal_extent=['2020-01-01', '2020-07-31'],
+        spatial_extent={'west': 4.34,'south': 51.17,'east': 4.50,'north': 51.27},
+        bands=['B02', 'B03', 'B04']
     ).resample_spatial(
         resolution=60,
         method='mean')
 
     # Excecute and assert
-    try:
-        execute_and_assert(cube, output_path, scenario_name)
-    except RuntimeError as e:
-        pytest.fail(str(e))
+    execute_and_assert(cube, output_path, scenario_name)
+
 
 
 def test_upsample_spatial(auth_connection, tmp_path):
 
     # Define scenario parameters
-    scenario_name = "upsample_spatial"
-    params = extract_scenario_parameters(scenario_name)
+    scenario_name = 'upsample_spatial'
 
     # Set up output directory and path
-    output_path = Path(tmp_path) / f"{scenario_name}.nc"
+    output_path = tmp_path / f"{scenario_name}.nc"
 
     # Load collection, and set up progress graph
     cube = auth_connection.load_collection(
-        collection_id=params['collection_id'],
-        temporal_extent=params['temporal_extent'],
-        spatial_extent=params['spatial_extent'],
-        bands=params['bands']
+        collection_id='SENTINEL2_L1C',
+        temporal_extent=['2020-01-01', '2020-12-31'],
+        spatial_extent={'west': 4.34,'south': 51.17,'east': 4.50,'north': 51.27},
+        bands=['B01', 'B09', 'B10']
     ).resample_spatial(
         resolution=10,
         method='mean')
     
     # Excecute and apply
-    try:
-        execute_and_assert(cube, output_path, scenario_name)
-    except RuntimeError as e:
-        pytest.fail(str(e))
+    execute_and_assert(cube, output_path, scenario_name)
+
 
 
 def test_reduce_time(auth_connection, tmp_path):
 
     # Define scenario parameters
-    scenario_name = "reduce_time"
-    params = extract_scenario_parameters(scenario_name)
+    scenario_name = 'reduce_time'
 
     # Set up output directory and path
-    output_path = Path(tmp_path) / f"{scenario_name}.nc"
+    output_path = tmp_path / f"{scenario_name}.nc"
 
     # Load collection, and set up progress graph
     cube = auth_connection.load_collection(
-        collection_id=params['collection_id'],
-        temporal_extent=params['temporal_extent'],
-        spatial_extent=params['spatial_extent'],
-        bands=params['bands']
+        collection_id='SENTINEL2_L2A',
+        temporal_extent=['2020-01-01', '2020-07-31'],
+        spatial_extent={'west': 4.34,'south': 51.17,'east': 4.50,'north': 51.27},
+        bands=['B02', 'B03']
     ).reduce_dimension(
-        dimension="t",
-        reducer="mean")
+        dimension='t',
+        reducer='mean')
 
     # Excecute and assert
-    try:
-        execute_and_assert(cube, output_path, scenario_name)
-    except RuntimeError as e:
-        pytest.fail(str(e))
+    execute_and_assert(cube, output_path, scenario_name)
+
 
 
 def test_mask_scl(auth_connection, tmp_path):
 
     # Define scenario parameters
-    scenario_name = "mask_scl"
-    params = extract_scenario_parameters(scenario_name)
+    scenario_name = 'mask_scl'
 
     # Set up output directory and path
-    output_path = Path(tmp_path) / f"{scenario_name}.nc"
+    output_path = tmp_path / f'{scenario_name}.nc'
 
     # Load collection, and set up progress graph
     cube = auth_connection.load_collection(
-        collection_id=params['collection_id'],
-        temporal_extent=params['temporal_extent'],
-        spatial_extent=params['spatial_extent'],
-        bands=params['bands']
+        collection_id='SENTINEL2_L2A',
+        temporal_extent=['2020-01-01', '2020-12-31'],
+        spatial_extent={'west': 4.34,'south': 51.17,'east': 4.50,'north': 51.27},
+        bands=['B05', 'B06', 'SCL']
     )
 
-    scl_band = cube.band("SCL")
+    scl_band = cube.band('SCL')
     cloud_mask = (scl_band == 3) | (scl_band == 8) | (scl_band == 9)
 
     cube.mask(cloud_mask)
 
     # Excecute and assert
-    try:
-        execute_and_assert(cube, output_path, scenario_name)
-    except RuntimeError as e:
-        pytest.fail(str(e))
+    execute_and_assert(cube, output_path, scenario_name)
+
     
-    
-    
-    
+
+#conn = openeo.connect("https://openeo.dataspace.copernicus.eu").authenticate_oidc()
+#tmp_path = Path('C:/Users/VROMPAYH/openeo-benchmarks')
+
