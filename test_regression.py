@@ -46,7 +46,7 @@ def test_aggregate_spatial(auth_connection, tmp_path):
     output_path = tmp_path / f'{scenario_name}.nc'
 
     # Get test geometries
-    geometries = extract_test_geometries(['alps_100_polygons.geojson'])
+    geometries = extract_test_geometries('alps_100_polygons.geojson')
     
     # Load collection, and set up progress graph
     cube = auth_connection.load_collection(
@@ -154,9 +154,4 @@ def test_mask_scl(auth_connection, tmp_path):
 
     # Excecute and assert
     execute_and_assert(cube, output_path, scenario_name)
-
-    
-
-#conn = openeo.connect("https://openeo.dataspace.copernicus.eu").authenticate_oidc()
-#tmp_path = Path('C:/Users/VROMPAYH/openeo-benchmarks')
 
