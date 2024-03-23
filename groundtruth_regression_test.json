@@ -42,31 +42,31 @@
       "scenario_name": "downsample_spatial",
       "reference_data": {
         "B02": {
-          "mean": 3504.03173828125,
-          "variance": 10741422.0,
+          "mean": 3409.3115234375,
+          "variance": 11301747.0.0,
           "min": -999.0,
           "max": 21807.0,
-          "quantile25": 709.0,
-          "quantile50": 2099.0,
-          "quantile75": 6270.0
+          "quantile25": 665.0,
+          "quantile50": 1739.0,
+          "quantile75": 6256.0
         },
         "B03": {
-          "mean": 3427.782958984375,
-          "variance": 9475790.0,
+          "mean": 33357.1005859375,
+          "variance": 10001190.0,
           "min": -999.0,
           "max": 19848.0,
-          "quantile25": 837.0,
-          "quantile50": 2090.0,
-          "quantile75": 5975.0
+          "quantile25": 804.0,
+          "quantile50": 1788.0,
+          "quantile75": 6012.0
         },
         "B04": {
-          "mean": 3375.7392578125,
-          "variance": 9265363.0,
+          "mean": 3315.80322265625,
+          "variance": 9829713.0.0,
           "min": -999.0,
           "max": 19160.0,
-          "quantile25": 837.0,
-          "quantile50": 2067.0,
-          "quantile75": 5867.0
+          "quantile25": 790.0,
+          "quantile50": 1802.0,
+          "quantile75": 5957.0
         }
       }
     },
