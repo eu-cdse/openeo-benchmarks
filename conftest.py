@@ -1,4 +1,3 @@
-import logging
 import os
 from typing import Any
 
@@ -8,23 +7,21 @@ import requests
 import openeo
 from openeo.capabilities import ComparableVersion
 
-_log = logging.getLogger(__name__)
-
-os.environ["ENDPOINT"] = "https://openeo.dataspace.copernicus.eu/"
-
 def get_openeo_base_url(version: str = "1.1.0"):
     try:
-        endpoint = os.environ["ENDPOINT"].rstrip("/")
+        backend_url = os.environ["backend_URL"].rstrip("/")
     except Exception:
         raise RuntimeError("Environment variable 'ENDPOINT' should be set"
                            " with URL pointing to OpenEO backend to test against"
                            " (e.g. 'http://localhost:8080/' or 'http://openeo-dev.vgt.vito.be/')")
-    return "{e}/openeo/{v}".format(e=endpoint.rstrip("/"), v=version)
+    return "{e}/openeo/{v}".format(e=backend_url.rstrip("/"), v=version)
 
 
+# TODO #Remove?
 @pytest.fixture(params=[
     "1.1.0",
 ])
+
 def api_version(request) -> ComparableVersion:
     return ComparableVersion(request.param)
 
@@ -51,8 +48,6 @@ def connection(api_base_url, requests_session) -> openeo.Connection:
     return openeo.connect(api_base_url, session=requests_session)
 
 
-# TODO #6 larger scope than "function" for this fixture?
-# TODO #6 better name for this fixture?
 @pytest.fixture
 def auth_connection(connection, capfd) -> openeo.Connection:
     """
