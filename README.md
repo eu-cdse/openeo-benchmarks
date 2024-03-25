@@ -1,10 +1,26 @@
 # openeo-benchmarks
-Benchmarks for openEO instance of Copernicus Dataspace Ecosystem
 
-How to use in conda:
-1: conda env config vars set OPENEO_BACKEND_URL=https://openeo.dataspace.copernicus.eu/
-2: pytest
+This repository contains benchmarks for the openEO instance of Copernicus Dataspace Ecosystem.
 
-How to use in Linux:
-1: export OPENEO_BACKEND_URL=https://openeo.dataspace.copernicus.eu/
-2: pytest
+## Usage
+
+### Using Conda
+
+1. Set the environment variable `OPENEO_BACKEND_URL` to the openEO backend URL:
+    ```bash
+    conda env config vars set OPENEO_BACKEND_URL=https://openeo.dataspace.copernicus.eu/
+
+2. Run pytest:
+    ```bash
+    pytest
+
+### Using Linux
+
+1. Set the environment variable `OPENEO_BACKEND_URL` to the openEO backend URL:
+    ```bash
+    export OPENEO_BACKEND_URL=https://openeo.dataspace.copernicus.eu/
+
+
+2. Run pytest:
+    ```bash
+    pytest

@@ -1,34 +1,16 @@
 import os
-from typing import Any
-
 import pytest
 import requests
-
 import openeo
-from openeo.capabilities import ComparableVersion
 
-def get_openeo_base_url(version: str = "1.1.0"):
+def get_openeo_base_url():
     try:
-        backend_url = os.environ["backend_URL"].rstrip("/")
+        backend_url = os.environ["OPENEO_BACKEND_URL"].rstrip("/")
     except Exception:
         raise RuntimeError("Environment variable 'ENDPOINT' should be set"
                            " with URL pointing to OpenEO backend to test against"
                            " (e.g. 'http://localhost:8080/' or 'http://openeo-dev.vgt.vito.be/')")
-    return "{e}/openeo/{v}".format(e=backend_url.rstrip("/"), v=version)
-
-
-# TODO #Remove?
-@pytest.fixture(params=[
-    "1.1.0",
-])
-
-def api_version(request) -> ComparableVersion:
-    return ComparableVersion(request.param)
-
-
-@pytest.fixture
-def api_base_url(api_version):
-    return get_openeo_base_url(str(api_version))
+    return backend_url.rstrip("/")
 
 
 @pytest.fixture
@@ -44,8 +26,8 @@ def requests_session(request) -> requests.Session:
 
 
 @pytest.fixture
-def connection(api_base_url, requests_session) -> openeo.Connection:
-    return openeo.connect(api_base_url, session=requests_session)
+def connection(get_openeo_base_url) -> openeo.Connection:
+    return openeo.connect(session=get_openeo_base_url)
 
 
 @pytest.fixture

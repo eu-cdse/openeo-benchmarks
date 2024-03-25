@@ -58,8 +58,8 @@ def assert_band_statistics(output_dict: dict, groundtruth_dict: dict, tolerance:
     Compares and asserts the statistics of different bands in the output against the reference data.
 
     Parameters:
-        output_band_stats (dict): The output dictionary containing band statistics to be compared.
-        groundtruth_band_dict (dict): The reference dictionary containing expected band statistics.
+        output_dict (dict): The output dictionary containing band statistics to be compared.
+        groundtruth_dict (dict): The reference dictionary containing expected band statistics.
         tolerance (float): Tolerance value for comparing values.
 
     Returns:
@@ -121,7 +121,7 @@ def calculate_band_statistics(hypercube: xr.Dataset) -> dict:
 def execute_and_assert(cube: openeo.DataCube, 
                        output_path: Union[str, Path], 
                        scenario_name: str,
-                       tolerance: float = 0.05) -> None:
+                       tolerance: float = 0.01) -> None:
     """
     Execute the provided OpenEO cube, save the result to the output path, 
     and assert its statistics against the reference data.
