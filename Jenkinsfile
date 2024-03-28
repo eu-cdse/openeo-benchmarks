@@ -5,7 +5,7 @@ pythonPipeline {
   package_name = "openeo-cdse-benchmarks"
   test_module_name = "."
   wipeout_workspace = true
-  python_version = ["3.6"]
+  python_version = ["3.10"]
   upload_dev_wheels = false
   pep440 = true
   extra_env_variables = [
