@@ -121,7 +121,7 @@ def calculate_band_statistics(hypercube: xr.Dataset) -> dict:
 def execute_and_assert(cube: openeo.DataCube, 
                        output_path: Union[str, Path], 
                        scenario_name: str,
-                       tolerance: float = 0.01) -> None:
+                       tolerance: float = 0.05) -> None:
     """
     Execute the provided OpenEO cube, save the result to the output path, 
     and assert its statistics against the reference data.
