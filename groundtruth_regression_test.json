@@ -1,0 +1,163 @@
+[
+    {
+      "scenario_name": "aggregate_polygons",
+      "reference_data": {
+        "B02": {
+          "mean": 3486.09,
+          "variance": 6424386.54,
+          "min": 766.52,
+          "max": 10848.88,
+          "quantile25": 1262.76,
+          "quantile50": 2275.59,
+          "quantile75": 5677.20
+        },
+        "B03": {
+          "mean": 3218.15,
+          "variance": 5758263.92,
+          "min": 583.67,
+          "max": 10905.90,
+          "quantile25": 1129.04,
+          "quantile50": 2037.04,
+          "quantile75": 5238.58
+        }
+      }
+    },
+
+    {
+      "scenario_name": "apply_spatial_kernel",
+      "reference_data": {
+        "B02": {
+          "mean": -344918049.55,
+          "variance": 6.179401772731276e+17,
+          "min": -2147483648.00,
+          "max": 20671.27,
+          "quantile25": 472.57,
+          "quantile50": 1034.74,
+          "quantile75": 5288.86
+        }
+      }
+    },
+
+    {
+      "scenario_name": "downsample_spatial",
+      "reference_data": {
+        "B02": {
+          "mean": 3409.31,
+          "variance": 11301747.00,
+          "min": -999.00,
+          "max": 21807.00,
+          "quantile25": 665.00,
+          "quantile50": 1739.00,
+          "quantile75": 6256.00
+        },
+        "B03": {
+          "mean": 3357.10,
+          "variance": 10001190.00,
+          "min": -999.00,
+          "max": 19848.00,
+          "quantile25": 804.00,
+          "quantile50": 1788.00,
+          "quantile75": 6012.00
+        },
+        "B04": {
+          "mean": 3315.80,
+          "variance": 9829713.00,
+          "min": -999.00,
+          "max": 19160.00,
+          "quantile25": 790.00,
+          "quantile50": 1802.00,
+          "quantile75": 5957.00
+        }
+      }
+    },
+
+    {
+      "scenario_name": "mask_scl",
+      "reference_data": {
+        "B05": {
+          "mean": 3617.58,
+          "variance": 9338768.00,
+          "min": -999.00,
+          "max": 18572.00,
+          "quantile25": 1124.00,
+          "quantile50": 2249.00,
+          "quantile75": 6081.00
+        },
+        "B06": {
+          "mean": 3822.09,
+          "variance": 7792535.00,
+          "min": -999.00,
+          "max": 17669.00,
+          "quantile25": 1600.00,
+          "quantile50": 2801.00,
+          "quantile75": 5994.00
+        },
+        "SCL": {
+          "mean": 7.29,
+          "variance": 4.62,
+          "min": 2.00,
+          "max": 11.00,
+          "quantile25": 5.00,
+          "quantile50": 8.00,
+          "quantile75": 9.00
+        }
+      }
+    },
+    {
+      "scenario_name": "reduce_time",
+      "reference_data": {
+        "B02": {
+          "mean": 3398.27,
+          "variance": 117754.37,
+          "min": 2329.49,
+          "max": 7569.79,
+          "quantile25": 3176.81,
+          "quantile50": 3385.20,
+          "quantile75": 3601.96
+        },
+        "B03": {
+          "mean": 3348.90,
+          "variance": 108607.77,
+          "min": 2266.77,
+          "max": 8035.77,
+          "quantile25": 3135.96,
+          "quantile50": 3331.89,
+          "quantile75": 3539.51
+        }
+      }
+    },
+
+    {
+      "scenario_name": "upsample_spatial",
+      "reference_data": {
+        "B01": {
+          "mean": 3564.94,
+          "variance": 4999496.00,
+          "min": 728.00,
+          "max": 21584.00,
+          "quantile25": 1678.00,
+          "quantile50": 2602.00,
+          "quantile75": 5377.00
+        },
+        "B09": {
+          "mean": 1596.84,
+          "variance": 1772179.00,
+          "min": -502.00,
+          "max": 23700.00,
+          "quantile25": 612.00,
+          "quantile50": 1100.00,
+          "quantile75": 2285.00
+        },
+        "B10": {
+            "mean": 223.57,
+            "variance": 215046.36,
+            "min": -73.00,
+            "max": 8930.00,
+            "quantile25": 19.00,
+            "quantile50": 55.00,
+            "quantile75": 201.00
+        }
+
+      }
+    }
+]
