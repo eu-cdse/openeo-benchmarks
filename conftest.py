@@ -28,4 +28,3 @@ def auth_connection(capfd) -> openeo.Connection:
         max_poll_time = int(os.environ.get("OPENEO_OIDC_DEVICE_CODE_MAX_POLL_TIME") or 30)
         connection.authenticate_oidc(max_poll_time=max_poll_time)
     return connection
-

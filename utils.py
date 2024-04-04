@@ -11,6 +11,7 @@ import pytest
 # Configure logging
 _log = logging.getLogger(__name__)
 
+
 def extract_test_geometries(filename) -> dict:
     """
     Read the geometries from a test file that is stored within the project
@@ -25,7 +26,6 @@ def extract_test_geometries(filename) -> dict:
         geometry_collection = geojson.load(f)
     return geometry_collection
     
-   
 
 def extract_reference_band_statistics(scenario_name: str) -> dict:
     """
@@ -50,7 +50,6 @@ def extract_reference_band_statistics(scenario_name: str) -> dict:
             return scenario_data['reference_data']
     
     raise ValueError(f"No reference data found for scenario '{scenario_name}' in file '{reference_file}'.")
-    
 
 
 def assert_band_statistics(output_dict: dict, groundtruth_dict: dict, tolerance: float) -> None:
@@ -118,6 +117,7 @@ def calculate_band_statistics(hypercube: xr.Dataset) -> dict:
 
     return statistics
 
+
 def execute_and_assert(cube: openeo.DataCube, 
                        output_path: Union[str, Path], 
                        scenario_name: str,
@@ -140,7 +140,7 @@ def execute_and_assert(cube: openeo.DataCube,
     
     cube.execute_batch(output_path,
                         title=scenario_name,
-                        description='benchmarking-creo', 
+                        description='benchmarking-creo',
                         job_options={'driver-memory': '1g'}
                         )
 
@@ -148,7 +148,3 @@ def execute_and_assert(cube: openeo.DataCube,
     output_dict = calculate_band_statistics(output_cube)
     groundtruth_dict = extract_reference_band_statistics(scenario_name)
     assert_band_statistics(output_dict, groundtruth_dict, tolerance)
-
-
-
-

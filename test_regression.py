@@ -1,6 +1,4 @@
-
 import numpy as np
-
 from utils import extract_test_geometries, execute_and_assert
 
 
@@ -27,11 +25,9 @@ def test_apply_kernel(auth_connection, tmp_path):
         kernel=filter_window,
         factor=factor)
     
-    
     # Excecute and Assert
     execute_and_assert(cube, output_path, scenario_name)
 
-    
 
 def test_aggregate_spatial(auth_connection, tmp_path):
 
@@ -57,7 +53,6 @@ def test_aggregate_spatial(auth_connection, tmp_path):
     execute_and_assert(cube, output_path, scenario_name)
 
 
-
 def test_downsample_spatial(auth_connection, tmp_path):
 
     # Define scenario parameters
@@ -78,7 +73,6 @@ def test_downsample_spatial(auth_connection, tmp_path):
 
     # Excecute and assert
     execute_and_assert(cube, output_path, scenario_name)
-
 
 
 def test_upsample_spatial(auth_connection, tmp_path):
@@ -103,7 +97,6 @@ def test_upsample_spatial(auth_connection, tmp_path):
     execute_and_assert(cube, output_path, scenario_name)
 
 
-
 def test_reduce_time(auth_connection, tmp_path):
 
     # Define scenario parameters
@@ -124,7 +117,6 @@ def test_reduce_time(auth_connection, tmp_path):
 
     # Excecute and assert
     execute_and_assert(cube, output_path, scenario_name)
-
 
 
 def test_mask_scl(auth_connection, tmp_path):
@@ -150,5 +142,3 @@ def test_mask_scl(auth_connection, tmp_path):
 
     # Excecute and assert
     execute_and_assert(cube, output_path, scenario_name)
-
-
