@@ -1,4 +1,6 @@
-geojson==2.5.0
-numpy==1.19.5
 openeo==0.22.0
+geojson==3.1.0
+numpy==1.24.4
 xarray==0.16.2
+netCDF4==1.6.5
+pytest==8.1.1
