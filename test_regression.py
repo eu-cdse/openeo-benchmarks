@@ -167,6 +167,7 @@ def test_BAP(auth_connection, tmp_path):
     spatial_geometries = gpd.read_file('.\geofiles\BAP.geojson')
     temporal_extent = ["2022-07-01", "2022-07-31"]
     spatial_resolution = 20
+    max_cloud_cover = 80
 
     # Fetch 100km x 100 km area from geojson
     spatial_geometries = spatial_geometries.to_crs(epsg=4326)
@@ -177,16 +178,16 @@ def test_BAP(auth_connection, tmp_path):
         collection_id,
         temporal_extent = temporal_extent,
         bands = ["B02", "B03","B04"],
-        max_cloud_cover=70
+        max_cloud_cover = max_cloud_cover
     ).resample_spatial(spatial_resolution
     ).filter_spatial(area)
 
     # Get slc
     scl = auth_connection.load_collection(
         collection_id,
-        temporal_extent=temporal_extent,
-        bands=["SCL"],
-        max_cloud_cover=90
+        temporal_extent = temporal_extent,
+        bands = ["SCL"],
+        max_cloud_cover = max_cloud_cover
     ).resample_spatial(spatial_resolution
     ).filter_spatial(area
     ).apply(lambda x: if_(is_nan(x), 0, x))

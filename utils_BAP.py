@@ -133,30 +133,6 @@ def aggregate_BAP_scores(dtc_score: openeo.DataCube,
              weights[2] * coverage_score) / sum(weights)
     return score
 
-
-def create_rank_mask(score: openeo.DataCube) -> openeo.DataCube:
-    """
-    Create a rank mask based on the input score.
-
-    Args:
-        score (DataCube): Input score data cube.
-
-    Returns:
-        DataCube: Rank mask data cube.
-    """
-    _log.info(f'aggregating rank mask')
-    # Create a rank mask
-    rank_mask = score.apply_neighborhood(
-        max_score_selection,
-        size=[{'dimension': 'x', 'unit': 'px', 'value': 1},
-              {'dimension': 'y', 'unit': 'px', 'value': 1},
-              {'dimension': 't', 'value': "month"}],
-        overlap=[]
-    )
-    rank_mask = rank_mask.band('score')
-    return rank_mask
-
-
 def day_of_month_calc(input: openeo.DataCube) -> openeo.DataCube:
     """
     Calculate day of month.
