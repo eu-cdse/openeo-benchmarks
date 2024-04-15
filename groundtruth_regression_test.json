@@ -159,31 +159,31 @@
         "scenario_name": "BAP",
         "reference_data": {
             "B02": {
-                "mean": 549.76,
-                "variance": 105755.79,
-                "min": -851.0,
-                "max": 14746.0,
-                "quantile25": 334.0,
-                "quantile50": 462.0,
-                "quantile75": 677.0
+                "mean": 528.25,
+                "variance": 100195.4,
+                "min": 116.0,
+                "max": 2550.0,
+                "quantile25": 273.0,
+                "quantile50": 433.0,
+                "quantile75": 693.0
             },
             "B03": {
-                "mean": 796.8,
-                "variance": 148897.12,
-                "min": -901.0,
-                "max": 17211.0,
-                "quantile25": 539.0,
-                "quantile50": 726.0,
-                "quantile75": 959.0
+                "mean": 817.39,
+                "variance": 148865.55,
+                "min": 169.0,
+                "max": 2610.0,
+                "quantile25": 496.0,
+                "quantile50": 762.0,
+                "quantile75": 1016.0
             },
             "B04": {
-                "mean": 735.55,
-                "variance": 265681.81,
-                "min": -882.0,
-                "max": 15667.0,
-                "quantile25": 379.0,
-                "quantile50": 575.0,
-                "quantile75": 946.0
+                "mean": 780.14,
+                "variance": 411518.0,
+                "min": 90.0,
+                "max": 3034.0,
+                "quantile25": 268.0,
+                "quantile50": 563.0,
+                "quantile75": 1097.0
             },
             "B05": {
                 "mean": 1260.71,
