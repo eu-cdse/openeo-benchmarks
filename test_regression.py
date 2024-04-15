@@ -214,8 +214,3 @@ def test_BAP(auth_connection, tmp_path):
 
     # Excecute and assert
     execute_and_assert(cube, output_path, scenario_name)
-
-
-
-
-    
