@@ -47,5 +47,15 @@ cube.execute_batch(outputfile=output_path,
 
 execute_and_update_reference(cube, output_path, scenario_name, json_name)
 
+#%%
+import xarray as xr
+from utils import calculate_band_statistics, extract_reference_band_statistics, assert_band_statistics, update_json
 
+json_name = 'groundtruth_regression_test.json'
+
+output_cube = xr.open_dataset(output_path)
+output_dict = calculate_band_statistics(output_cube)
+update_json(json_name, scenario_name, output_dict)
+groundtruth_dict = extract_reference_band_statistics(scenario_name)
+assert_band_statistics(output_dict, groundtruth_dict, 0.05)
 
