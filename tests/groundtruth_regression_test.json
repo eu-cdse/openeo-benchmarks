@@ -159,67 +159,67 @@
         "scenario_name": "BAP",
         "reference_data": {
             "B02": {
-                "mean": 528.25,
-                "variance": 100195.4,
-                "min": 116.0,
-                "max": 2550.0,
-                "quantile25": 273.0,
-                "quantile50": 433.0,
-                "quantile75": 693.0
+                "mean": 567.49,
+                "variance": 110802.48,
+                "min": -633.0,
+                "max": 6668.0,
+                "quantile25": 338.0,
+                "quantile50": 463.0,
+                "quantile75": 707.0
             },
             "B03": {
-                "mean": 817.39,
-                "variance": 148865.55,
-                "min": 169.0,
-                "max": 2610.0,
-                "quantile25": 496.0,
-                "quantile50": 762.0,
-                "quantile75": 1016.0
+                "mean": 810.9,
+                "variance": 154468.12,
+                "min": 118.0,
+                "max": 5194.0,
+                "quantile25": 531.0,
+                "quantile50": 726.0,
+                "quantile75": 981.0
             },
             "B04": {
-                "mean": 780.14,
-                "variance": 411518.0,
-                "min": 90.0,
-                "max": 3034.0,
-                "quantile25": 268.0,
-                "quantile50": 563.0,
-                "quantile75": 1097.0
+                "mean": 756.9,
+                "variance": 300265.47,
+                "min": -55.0,
+                "max": 5305.0,
+                "quantile25": 373.0,
+                "quantile50": 574.0,
+                "quantile75": 983.0
             },
             "B05": {
-                "mean": 1260.71,
-                "variance": 248296.03,
-                "min": -468.0,
-                "max": 15847.0,
-                "quantile25": 912.0,
-                "quantile50": 1191.0,
-                "quantile75": 1501.0
+                "mean": 1265.01,
+                "variance": 277515.34,
+                "min": 192.0,
+                "max": 6017.0,
+                "quantile25": 893.0,
+                "quantile50": 1188.0,
+                "quantile75": 1525.0
             },
             "B06": {
-                "mean": 2539.05,
-                "variance": 684022.69,
-                "min": 25.0,
-                "max": 17363.0,
-                "quantile25": 2000.0,
-                "quantile50": 2539.0,
-                "quantile75": 3059.0
+                "mean": 2531.81,
+                "variance": 715958.5,
+                "min": 112.0,
+                "max": 7041.0,
+                "quantile25": 1945.0,
+                "quantile50": 2627.0,
+                "quantile75": 3139.0
             },
             "B07": {
-                "mean": 2992.86,
-                "variance": 1047291.88,
-                "min": -841.0,
-                "max": 17067.0,
-                "quantile25": 2265.0,
-                "quantile50": 2977.0,
-                "quantile75": 3692.0
+                "mean": 2970.58,
+                "variance": 1172148.25,
+                "min": 130.0,
+                "max": 7284.0,
+                "quantile25": 2168.0,
+                "quantile50": 3014.0,
+                "quantile75": 3752.0
             },
             "B08": {
-                "mean": 3209.55,
-                "variance": 1286250.38,
-                "min": -571.0,
-                "max": 17405.0,
-                "quantile25": 2386.0,
-                "quantile50": 3179.0,
-                "quantile75": 4009.0
+                "mean": 3168.35,
+                "variance": 1352579.75,
+                "min": -195.0,
+                "max": 8800.0,
+                "quantile25": 2302.0,
+                "quantile50": 3214.0,
+                "quantile75": 4016.0
             }
         }
     }

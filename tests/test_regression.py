@@ -165,7 +165,7 @@ def test_BAP(auth_connection, tmp_path):
     # Parameters for data collection
     collection_id = "SENTINEL2_L2A"
     spatial_geometries = gpd.read_file('.\geofiles\BAP.geojson')
-    temporal_extent = ["2022-07-01", "2022-07-31"]
+    temporal_extent = ["2022-01-01", "2022-07-31"]
     spatial_resolution = 20
     max_cloud_cover = 80
 
@@ -177,7 +177,7 @@ def test_BAP(auth_connection, tmp_path):
     cube = auth_connection.load_collection(
         collection_id,
         temporal_extent = temporal_extent,
-        bands = ["B02", "B03","B04"],
+        bands = ["B02", "B03","B04", "B05", "B06", "B07", "B08"],
         max_cloud_cover = max_cloud_cover
     ).resample_spatial(spatial_resolution
     ).filter_spatial(area)
@@ -211,9 +211,9 @@ def test_BAP(auth_connection, tmp_path):
                     ).mask(cloud_mask
                     ).aggregate_temporal_period("month","first")
 
-
+    
     # Excecute and assert
     execute_and_assert(cube, output_path, scenario_name)
-
+    
 
 
