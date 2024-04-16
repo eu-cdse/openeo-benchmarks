@@ -1,10 +1,6 @@
 #%%
-import numpy as np
-import geopandas as gpd
-from openeo.processes import if_, is_nan
 from pathlib import Path
 import openeo
-import sys
 
 
 from utils import execute_and_update_reference
