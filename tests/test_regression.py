@@ -164,7 +164,7 @@ def test_BAP(auth_connection, tmp_path):
 
     # Parameters for data collection
     collection_id = "SENTINEL2_L2A"
-    spatial_geometries = gpd.read_file('.\geofiles\BAP.geojson')
+    spatial_geometries = gpd.read_file('geofiles\BAP.geojson')
     temporal_extent = ["2022-01-01", "2022-07-31"]
     spatial_resolution = 20
     max_cloud_cover = 80
