@@ -39,7 +39,7 @@ def extract_reference_band_statistics(scenario_name: str) -> dict:
     Returns:
         dict: The reference data for the specified scenario.
     """
-    reference_file = 'groundtruth_regression_test.json'
+    reference_file = 'tests/groundtruth_regression_test.json'
 
     _log.info(f'Extracting reference band statistics for {scenario_name}')
 
