@@ -20,11 +20,10 @@ def extract_test_geometries(filename) -> dict:
     :param filename: Name of the GeoJSON file to read
     :return: GeoJSON Geometry collection
     """
-    path = f'filename'
-    _log.info(f'Reading geometries from {path}')
+    _log.info(f'Reading geometries from {filename}')
 
 
-    with open(path) as f:
+    with open(filename) as f:
         geometry_collection = geojson.load(f)
     return geometry_collection
     

@@ -2,6 +2,10 @@
 import numpy as np
 import geopandas as gpd
 from openeo.processes import if_, is_nan
+import os
+
+# Assuming the current working directory is 'A' where you run the tests
+geofiles_dir = 'geofiles'
 
 
 from utils import extract_test_geometries, execute_and_assert
@@ -48,7 +52,8 @@ def test_aggregate_spatial(auth_connection, tmp_path):
     output_path = tmp_path / f'output.nc'
 
     # Get test geometries
-    geometries = extract_test_geometries('alps_100_polygons.geojson')
+    geojson_file = os.path.join(geofiles_dir, 'alps_100_polygons.geojson')
+    geometries = extract_test_geometries(geojson_file)
     
     # Load collection, and set up progress graph
     cube = auth_connection.load_collection(
@@ -162,9 +167,11 @@ def test_BAP(auth_connection, tmp_path):
     # Set up output directory and path
     output_path = tmp_path / f'output.nc'
 
+    geojson_file = os.path.join(geofiles_dir, 'BAP.geojson')
+
     # Parameters for data collection
     collection_id = "SENTINEL2_L2A"
-    spatial_geometries = gpd.read_file('geofiles\BAP.geojson')
+    spatial_geometries = gpd.read_file(geojson_file)
     temporal_extent = ["2022-01-01", "2022-07-31"]
     spatial_resolution = 20
     max_cloud_cover = 80
