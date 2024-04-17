@@ -8,15 +8,41 @@ from pathlib import Path
 import requests
 from typing import Union
 import xarray as xr
+import pytest
 
 # Assuming the current working directory is 'A' where you run the tests
-from utils import  (calculate_band_statistics, extract_reference_band_statistics,
-                    assert_band_statistics)
+from utils import  (calculate_band_statistics, extract_reference_band_statistics)
 
 from utils_BAP import (calculate_cloud_mask, calculate_cloud_coverage_score,
                            calculate_date_score, calculate_distance_to_cloud_score,
                            calculate_distance_to_cloud_score, aggregate_BAP_scores,
                            create_rank_mask)
+
+def assert_band_statistics(output_dict: dict, groundtruth_dict: dict, tolerance: float) -> None:
+    """
+    Compares and asserts the statistics of different bands in the output against the reference data.
+
+    Parameters:
+        output_dict (dict): The output dictionary containing band statistics to be compared.
+        groundtruth_dict (dict): The reference dictionary containing expected band statistics.
+        tolerance (float): Tolerance value for comparing values.
+
+    Returns:
+        None
+    """
+
+    for output_band_name, output_band_stats in output_dict.items():
+            if output_band_name not in groundtruth_dict:
+                msg = f"Warning: Band '{output_band_name}' not found in reference."
+                continue
+
+            gt_band_stats = groundtruth_dict[output_band_name]
+            for stat_name, gt_value in gt_band_stats.items():
+                if stat_name not in output_band_stats:
+                    msg = f"Warning: Statistic '{stat_name}' not found for band '{output_band_name}' in output."
+                    continue
+
+                assert output_band_stats[stat_name] == pytest.approx(gt_value, rel=tolerance)
 
 def execute_and_assert(cube: openeo.DataCube, 
                        output_path: Union[str, Path], 
