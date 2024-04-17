@@ -1,20 +1,53 @@
 #%%
-import numpy as np
 import geopandas as gpd
+import geojson
+import numpy as np
+import openeo
 from openeo.processes import if_, is_nan
 from pathlib import Path
 import requests
-import geojson
+from typing import Union
+import xarray as xr
 
 # Assuming the current working directory is 'A' where you run the tests
-from utils import  execute_and_assert
+from utils import  (calculate_band_statistics, extract_reference_band_statistics,
+                    assert_band_statistics)
 
 from utils_BAP import (calculate_cloud_mask, calculate_cloud_coverage_score,
                            calculate_date_score, calculate_distance_to_cloud_score,
                            calculate_distance_to_cloud_score, aggregate_BAP_scores,
                            create_rank_mask)
 
+def execute_and_assert(cube: openeo.DataCube, 
+                       output_path: Union[str, Path], 
+                       scenario_name: str,
+                       tolerance: float = 0.05) -> None:
+    """
+    Execute the provided OpenEO cube, save the result to the output path, 
+    and assert its statistics against the reference data.
 
+    Parameters:
+        cube (openeo.datacube.DataCube): The OpenEO data cube to execute.
+        output_path (Union[str, Path]): The path where the output should be saved.
+        scenario_name (str): A name identifying the scenario for reference data.
+
+    Returns:
+        None
+
+    Raises:
+        RuntimeError: If there is an issue during execution, file saving, or assertion.
+    """
+    
+    cube.execute_batch(outputfile=output_path,
+                        title=scenario_name,
+                        description='benchmarking-creo',
+                        job_options={'driver-memory': '1g'}
+                        )
+
+    output_cube = xr.open_dataset(output_path)
+    output_dict = calculate_band_statistics(output_cube)
+    groundtruth_dict = extract_reference_band_statistics(scenario_name)
+    assert_band_statistics(output_dict, groundtruth_dict, tolerance)
 
 
 def test_aggregate_spatial(auth_connection, tmp_path):
