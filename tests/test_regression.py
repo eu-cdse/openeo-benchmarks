@@ -43,7 +43,7 @@ def test_aggregate_spatial(auth_connection, tmp_path):
     
     # Excecute and assert
     execute_and_assert(cube, output_path, scenario_name)
-'''
+
 
 def test_apply_kernel(auth_connection, tmp_path):
 
@@ -161,7 +161,7 @@ def test_mask_scl(auth_connection, tmp_path):
 
     # Excecute and assert
     execute_and_assert(cube, output_path, scenario_name)
-'''
+
 
 def test_BAP(auth_connection, tmp_path):
 
