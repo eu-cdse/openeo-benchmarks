@@ -4,10 +4,8 @@ import geopandas as gpd
 from openeo.processes import if_, is_nan
 import os
 
-from tests import geofiles
-
 # Assuming the current working directory is 'A' where you run the tests
-geofiles_dir = 'tests\geofiles'
+geofiles_dir = 'tests\\geofiles'
 
 
 from utils import extract_test_geometries, execute_and_assert
