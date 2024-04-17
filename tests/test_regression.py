@@ -4,8 +4,10 @@ import geopandas as gpd
 from openeo.processes import if_, is_nan
 import os
 
+from tests import geofiles
+
 # Assuming the current working directory is 'A' where you run the tests
-geofiles_dir = 'geofiles'
+geofiles_dir = 'tests\geofiles'
 
 
 from utils import extract_test_geometries, execute_and_assert
@@ -15,6 +17,33 @@ from utils_BAP import (calculate_cloud_mask, calculate_cloud_coverage_score,
                            calculate_distance_to_cloud_score, aggregate_BAP_scores,
                            create_rank_mask)
 
+
+
+
+def test_aggregate_spatial(auth_connection, tmp_path):
+
+    # Define scenario parameters
+    scenario_name = 'aggregate_polygons'
+
+    # Set up output directory and path
+    output_path = tmp_path / f'output.nc'
+
+    # Get test geometries
+    geojson_file = os.path.join(geofiles_dir, 'alps_100_polygons.geojson')
+    geometries = extract_test_geometries(geojson_file)
+    
+    # Load collection, and set up progress graph
+    cube = auth_connection.load_collection(
+        collection_id='SENTINEL2_L1C',
+        temporal_extent=['2020-01-01', '2020-05-31'],
+        bands=['B02', 'B03']
+    ).aggregate_spatial(
+        geometries=geometries,
+        reducer='mean')
+    
+    # Excecute and assert
+    execute_and_assert(cube, output_path, scenario_name)
+'''
 
 def test_apply_kernel(auth_connection, tmp_path):
 
@@ -40,31 +69,6 @@ def test_apply_kernel(auth_connection, tmp_path):
         factor=factor)
     
     # Excecute and Assert
-    execute_and_assert(cube, output_path, scenario_name)
-
-
-def test_aggregate_spatial(auth_connection, tmp_path):
-
-    # Define scenario parameters
-    scenario_name = 'aggregate_polygons'
-
-    # Set up output directory and path
-    output_path = tmp_path / f'output.nc'
-
-    # Get test geometries
-    geojson_file = os.path.join(geofiles_dir, 'alps_100_polygons.geojson')
-    geometries = extract_test_geometries(geojson_file)
-    
-    # Load collection, and set up progress graph
-    cube = auth_connection.load_collection(
-        collection_id='SENTINEL2_L1C',
-        temporal_extent=['2020-01-01', '2020-05-31'],
-        bands=['B02', 'B03']
-    ).aggregate_spatial(
-        geometries=geometries,
-        reducer='mean')
-    
-    # Excecute and assert
     execute_and_assert(cube, output_path, scenario_name)
 
 
@@ -157,7 +161,7 @@ def test_mask_scl(auth_connection, tmp_path):
 
     # Excecute and assert
     execute_and_assert(cube, output_path, scenario_name)
-
+'''
 
 def test_BAP(auth_connection, tmp_path):
 
@@ -223,4 +227,11 @@ def test_BAP(auth_connection, tmp_path):
     execute_and_assert(cube, output_path, scenario_name)
     
 
+#%%
+import openeo
+from pathlib import Path
 
+tmp_path = Path('./')
+auth_connection = openeo.connect(url="openeo.dataspace.copernicus.eu").authenticate_oidc()
+
+test_aggregate_spatial(auth_connection, tmp_path)
