@@ -1,6 +1,5 @@
 #%%
 import logging
-import geojson
 import xarray as xr
 import json
 import openeo
@@ -13,20 +12,6 @@ import pytest
 # Configure logging
 _log = logging.getLogger(__name__)
 
-
-def extract_test_geometries(filename) -> dict:
-    """
-    Read the geometries from a test file that is stored within the project
-    :param filename: Name of the GeoJSON file to read
-    :return: GeoJSON Geometry collection
-    """
-    _log.info(f'Reading geometries from {filename}')
-
-
-    with open(filename) as f:
-        geometry_collection = geojson.load(f)
-    return geometry_collection
-    
 
 def extract_reference_band_statistics(scenario_name: str) -> dict:
     """

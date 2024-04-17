@@ -2,13 +2,12 @@
 import numpy as np
 import geopandas as gpd
 from openeo.processes import if_, is_nan
-import os
+from pathlib import Path
+import requests
+import geojson
 
 # Assuming the current working directory is 'A' where you run the tests
-geofiles_dir = 'tests\\geofiles'
-
-
-from utils import extract_test_geometries, execute_and_assert
+from utils import  execute_and_assert
 
 from utils_BAP import (calculate_cloud_mask, calculate_cloud_coverage_score,
                            calculate_date_score, calculate_distance_to_cloud_score,
@@ -27,8 +26,11 @@ def test_aggregate_spatial(auth_connection, tmp_path):
     output_path = tmp_path / f'output.nc'
 
     # Get test geometries
-    geojson_file = os.path.join(geofiles_dir, 'alps_100_polygons.geojson')
-    geometries = extract_test_geometries(geojson_file)
+    geojson_url = 'https://artifactory.vgt.vito.be/artifactory/auxdata-public/cdse_benchmarks/geofiles/alps_100_polygons.geojson'
+
+    # Fetch the GeoJSON content
+    response = requests.get(geojson_url)
+    geometry_collection = geojson.loads(response.text)
     
     # Load collection, and set up progress graph
     cube = auth_connection.load_collection(
@@ -36,7 +38,7 @@ def test_aggregate_spatial(auth_connection, tmp_path):
         temporal_extent=['2020-01-01', '2020-05-31'],
         bands=['B02', 'B03']
     ).aggregate_spatial(
-        geometries=geometries,
+        geometries=geometry_collection,
         reducer='mean')
     
     # Excecute and assert
@@ -169,18 +171,26 @@ def test_BAP(auth_connection, tmp_path):
     # Set up output directory and path
     output_path = tmp_path / f'output.nc'
 
-    geojson_file = os.path.join(geofiles_dir, 'BAP.geojson')
+    # Get test geometries
+    geojson_url = 'https://artifactory.vgt.vito.be/artifactory/auxdata-public/cdse_benchmarks/geofiles/BAP.geojson'
+    response = requests.get(geojson_url)
+
+    # Write the content to a local file
+    filepath = 'BAP.geojson'  # Or specify a different filepath
+    with open(filepath, 'wb') as f:
+        f.write(response.content)
+
+    spatial_geometries = gpd.read_file(filepath)
+    spatial_geometries = spatial_geometries.to_crs(epsg=4326)
+    area = eval(spatial_geometries.to_json())
+    
 
     # Parameters for data collection
     collection_id = "SENTINEL2_L2A"
-    spatial_geometries = gpd.read_file(geojson_file)
     temporal_extent = ["2022-01-01", "2022-07-31"]
     spatial_resolution = 20
     max_cloud_cover = 80
 
-    # Fetch 100km x 100 km area from geojson
-    spatial_geometries = spatial_geometries.to_crs(epsg=4326)
-    area = eval(spatial_geometries.to_json())
 
     # Get the spectral bands of interest
     cube = auth_connection.load_collection(
@@ -224,12 +234,3 @@ def test_BAP(auth_connection, tmp_path):
     # Excecute and assert
     execute_and_assert(cube, output_path, scenario_name)
     
-
-#%%
-import openeo
-from pathlib import Path
-
-tmp_path = Path('./')
-auth_connection = openeo.connect(url="openeo.dataspace.copernicus.eu").authenticate_oidc()
-
-test_aggregate_spatial(auth_connection, tmp_path)
