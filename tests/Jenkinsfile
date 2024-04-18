@@ -4,12 +4,14 @@
 pythonPipeline {
   package_name = "openeo-cdse-benchmarks"
   test_module_name = "."
+  pep440 = true
   wipeout_workspace = true
   python_version = ["3.10"]
   tests_location = "test_regression.py"
   build_wheel = false
   upload_dev_wheels = false
-  pep440 = true
+  run_tests = false
+  build_wheel = false
   extra_env_variables = [
     "OPENEO_AUTH_METHOD=client_credentials",
     "OPENEO_OIDC_DEVICE_CODE_MAX_POLL_TIME=5",
