@@ -1,19 +1,21 @@
 #%%
-import geopandas as gpd
 import geojson
+import geopandas as gpd
 import numpy as np
-from openeo.processes import if_, is_nan
+import pytest
 import requests
 import xarray as xr
-import pytest
+from openeo.processes import if_, is_nan
 
-
-from utils import  calculate_cube_statistics, extract_reference_statistics
-
-from utils_BAP import (calculate_cloud_mask, calculate_cloud_coverage_score,
-                           calculate_date_score, calculate_distance_to_cloud_score,
-                           calculate_distance_to_cloud_score, aggregate_BAP_scores,
-                           create_rank_mask)
+from utils import calculate_cube_statistics, extract_reference_statistics
+from utils_BAP import (
+    aggregate_BAP_scores,
+    calculate_cloud_coverage_score,
+    calculate_cloud_mask,
+    calculate_date_score,
+    calculate_distance_to_cloud_score,
+    create_rank_mask,
+)
 
 TOLERANCE = 0.01 #max allowed deviation
 

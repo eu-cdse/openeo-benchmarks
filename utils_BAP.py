@@ -1,10 +1,11 @@
 
-import openeo
-from openeo.api.process import Parameter
 import logging
 
-from scipy.signal.windows import gaussian
 import numpy as np
+import openeo
+from openeo.api.process import Parameter
+from scipy.signal.windows import gaussian
+
 _log = logging.getLogger(__name__)
 
 def calculate_cloud_mask(scl: openeo.DataCube) -> openeo.DataCube:

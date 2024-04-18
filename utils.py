@@ -1,14 +1,12 @@
 #%%
-import logging
-import geopandas as gpd
-import xarray as xr
 import json
-import openeo
-from typing import Union
+import logging
 from pathlib import Path
-import numpy as np
+from typing import Union
 
-import pytest
+import numpy as np
+import openeo
+import xarray as xr
 
 # Configure logging
 _log = logging.getLogger(__name__)
