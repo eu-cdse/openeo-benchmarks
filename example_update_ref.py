@@ -3,8 +3,7 @@ from pathlib import Path
 import openeo
 from utils import execute_and_update_reference
 
-
-if __name__ == "__main__":
+def main():
     auth_connection = openeo.connect(url="openeo.dataspace.copernicus.eu").authenticate_oidc()
 
     tmp_path = Path('./')
@@ -29,3 +28,7 @@ if __name__ == "__main__":
 
 
     execute_and_update_reference(cube, output_path, scenario_name, json_name)
+
+
+if __name__ == "__main__":
+    main()
