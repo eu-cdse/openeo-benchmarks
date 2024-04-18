@@ -8,6 +8,7 @@ pythonPipeline {
   python_version = ["3.10"]
   upload_dev_wheels = false
   pep440 = true
+  build_wheel = false
   extra_env_variables = [
     "OPENEO_AUTH_METHOD=client_credentials",
     "OPENEO_OIDC_DEVICE_CODE_MAX_POLL_TIME=5",
@@ -17,22 +18,4 @@ pythonPipeline {
   extra_env_secrets = [
     'OPENEO_AUTH_CLIENT_SECRET': 'TAP/big_data_services/openeo/cdse-service-accounts/openeo-cdse-ci-service-account client_secret',
   ]
-
-  stages {
-    stage('Checkout') {
-      steps {
-        // Checkout code from your version control system
-      }
-    }
-    stage('Prepare virtualenv') {
-      steps {
-        // Prepare virtual environment
-      }
-    }
-    stage('Execute Tests') {
-      steps {
-        // Execute your tests
-      }
-    }
-    
 }
