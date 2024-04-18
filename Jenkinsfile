@@ -6,6 +6,7 @@ pythonPipeline {
   test_module_name = "."
   wipeout_workspace = true
   python_version = ["3.10"]
+  build_wheel = false
   upload_dev_wheels = false
   pep440 = true
   extra_env_variables = [
