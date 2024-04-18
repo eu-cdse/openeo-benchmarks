@@ -2,78 +2,18 @@
 import geopandas as gpd
 import geojson
 import numpy as np
-import openeo
 from openeo.processes import if_, is_nan
-from pathlib import Path
 import requests
-from typing import Union
-import xarray as xr
-import pytest
+
 
 # Assuming the current working directory is 'A' where you run the tests
-from utils import  (calculate_band_statistics, extract_reference_band_statistics)
+from utils import  execute_and_assert
 
 from utils_BAP import (calculate_cloud_mask, calculate_cloud_coverage_score,
                            calculate_date_score, calculate_distance_to_cloud_score,
                            calculate_distance_to_cloud_score, aggregate_BAP_scores,
                            create_rank_mask)
 
-def assert_band_statistics(output_dict: dict, groundtruth_dict: dict, tolerance: float) -> None:
-    """
-    Compares and asserts the statistics of different bands in the output against the reference data.
-
-    Parameters:
-        output_dict (dict): The output dictionary containing band statistics to be compared.
-        groundtruth_dict (dict): The reference dictionary containing expected band statistics.
-        tolerance (float): Tolerance value for comparing values.
-
-    Returns:
-        None
-    """
-
-    for output_band_name, output_band_stats in output_dict.items():
-            if output_band_name not in groundtruth_dict:
-                msg = f"Warning: Band '{output_band_name}' not found in reference."
-                continue
-
-            gt_band_stats = groundtruth_dict[output_band_name]
-            for stat_name, gt_value in gt_band_stats.items():
-                if stat_name not in output_band_stats:
-                    msg = f"Warning: Statistic '{stat_name}' not found for band '{output_band_name}' in output."
-                    continue
-
-                assert output_band_stats[stat_name] == pytest.approx(gt_value, rel=tolerance)
-
-def execute_and_assert(cube: openeo.DataCube, 
-                       output_path: Union[str, Path], 
-                       scenario_name: str,
-                       tolerance: float = 0.05) -> None:
-    """
-    Execute the provided OpenEO cube, save the result to the output path, 
-    and assert its statistics against the reference data.
-
-    Parameters:
-        cube (openeo.datacube.DataCube): The OpenEO data cube to execute.
-        output_path (Union[str, Path]): The path where the output should be saved.
-        scenario_name (str): A name identifying the scenario for reference data.
-
-    Returns:
-        None
-
-    Raises:
-        RuntimeError: If there is an issue during execution, file saving, or assertion.
-    """
-    
-    cube.execute_batch(outputfile=output_path,
-                        title=scenario_name,
-                        description='benchmarking-creo',
-                        job_options={'driver-memory': '1g'}
-                        )
-
-    output_cube = xr.open_dataset(output_path)
-    output_dict = calculate_band_statistics(output_cube)
-    groundtruth_dict = extract_reference_band_statistics(scenario_name)
-    assert_band_statistics(output_dict, groundtruth_dict, tolerance)
 
 
 def test_aggregate_spatial(auth_connection, tmp_path):
