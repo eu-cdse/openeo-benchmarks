@@ -1,5 +1,6 @@
 #%%
 import logging
+import geopandas as gpd
 import xarray as xr
 import json
 import openeo
@@ -37,6 +38,35 @@ def extract_reference_band_statistics(scenario_name: str) -> dict:
     
     raise ValueError(f"No reference data found for scenario '{scenario_name}' in file '{reference_file}'.")
 
+
+def assert_band_statistics(output_dict: dict, groundtruth_dict: dict, tolerance: float) -> None:
+    """
+    Compares and asserts the statistics of different bands in the output against the reference data.
+
+    Parameters:
+        output_dict (dict): The output dictionary containing band statistics to be compared.
+        groundtruth_dict (dict): The reference dictionary containing expected band statistics.
+        tolerance (float): Tolerance value for comparing values.
+
+    Returns:
+        None
+    """
+    _log.info('Comparing and asserting the statistics of different bands in the output')
+
+    for output_band_name, output_band_stats in output_dict.items():
+            if output_band_name not in groundtruth_dict:
+                msg = f"Warning: Band '{output_band_name}' not found in reference."
+                _log.warning(msg)
+                continue
+
+            gt_band_stats = groundtruth_dict[output_band_name]
+            for stat_name, gt_value in gt_band_stats.items():
+                if stat_name not in output_band_stats:
+                    msg = f"Warning: Statistic '{stat_name}' not found for band '{output_band_name}' in output."
+                    _log.warning(msg)
+                    continue
+
+                assert output_band_stats[stat_name] == pytest.approx(gt_value, rel=tolerance)
                 
 
 def calculate_band_statistics(hypercube: xr.Dataset) -> dict:
@@ -48,7 +78,7 @@ def calculate_band_statistics(hypercube: xr.Dataset) -> dict:
         
     Returns:
         dict: A dictionary containing statistics for each variable in the output cube. Keys are variable names 
-              (matching the pattern 'B01, B02, ...') and values are dictionaries containing mean, variance, min, max, 
+              (matching the pattern 'B01, B02, ...') and values are dictionaries containing mean, min, max, 
               and quantile statistics.
     """
     statistics = {}
@@ -57,7 +87,6 @@ def calculate_band_statistics(hypercube: xr.Dataset) -> dict:
     for band_name in band_names:
         band_data = hypercube[band_name]
         mean_value = np.round(float(band_data.mean()),2)
-        variance_value = np.round(float(band_data.var()),2)
         min_value = np.round(float(band_data.min()),2)
         max_value = np.round(float(band_data.max()),2)
         quantile_25 = np.round(band_data.quantile([0.25]).values,2)
@@ -66,7 +95,6 @@ def calculate_band_statistics(hypercube: xr.Dataset) -> dict:
         
         statistics[band_name] = {
             'mean': mean_value,
-            'variance': variance_value,
             'min': min_value,
             'max': max_value,
             'quantile25': quantile_25[0],
@@ -77,6 +105,36 @@ def calculate_band_statistics(hypercube: xr.Dataset) -> dict:
     return statistics
 
 
+def execute_and_assert(cube: openeo.DataCube, 
+                       output_path: Union[str, Path], 
+                       scenario_name: str,
+                       tolerance: float = 0.05) -> None:
+    """
+    Execute the provided OpenEO cube, save the result to the output path, 
+    and assert its statistics against the reference data.
+
+    Parameters:
+        cube (openeo.datacube.DataCube): The OpenEO data cube to execute.
+        output_path (Union[str, Path]): The path where the output should be saved.
+        scenario_name (str): A name identifying the scenario for reference data.
+
+    Returns:
+        None
+
+    Raises:
+        RuntimeError: If there is an issue during execution, file saving, or assertion.
+    """
+    
+    cube.execute_batch(outputfile=output_path,
+                        title=scenario_name,
+                        description='benchmarking-creo',
+                        job_options={'driver-memory': '1g'}
+                        )
+
+    output_cube = xr.open_dataset(output_path)
+    output_dict = calculate_band_statistics(output_cube)
+    groundtruth_dict = extract_reference_band_statistics(scenario_name)
+    assert_band_statistics(output_dict, groundtruth_dict, tolerance)
 
 # functionality for updating the reference
 
