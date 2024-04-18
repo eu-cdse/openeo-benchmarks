@@ -7,8 +7,8 @@ import requests
 import xarray as xr
 from openeo.processes import if_, is_nan
 
-from utils import calculate_cube_statistics, extract_reference_statistics
-from utils_BAP import (
+from .utils import calculate_cube_statistics, extract_reference_statistics
+from .utils_BAP import (
     aggregate_BAP_scores,
     calculate_cloud_coverage_score,
     calculate_cloud_mask,
