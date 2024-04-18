@@ -1,8 +1,6 @@
 #%%
 from pathlib import Path
 import openeo
-
-
 from utils import execute_and_update_reference
 
 

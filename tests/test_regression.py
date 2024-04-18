@@ -4,17 +4,21 @@ import geojson
 import numpy as np
 from openeo.processes import if_, is_nan
 import requests
+import xarray as xr
+import pytest
 
 
-# Assuming the current working directory is 'A' where you run the tests
-from utils import  execute_and_assert
+from utils import  calculate_cube_statistics, extract_reference_statistics
 
 from utils_BAP import (calculate_cloud_mask, calculate_cloud_coverage_score,
                            calculate_date_score, calculate_distance_to_cloud_score,
                            calculate_distance_to_cloud_score, aggregate_BAP_scores,
                            create_rank_mask)
 
+TOLERANCE = 0.01 #max allowed deviation
 
+#Below we list the regression tests on common operations in openEO.
+#Note, the assert is specifically kept in the test file for tracibility in Jenkins
 
 def test_aggregate_spatial(auth_connection, tmp_path):
 
@@ -41,7 +45,18 @@ def test_aggregate_spatial(auth_connection, tmp_path):
         reducer='mean')
     
     # Excecute and assert
-    execute_and_assert(cube, output_path, scenario_name)
+    cube.execute_batch(outputfile=output_path,
+                        title=scenario_name,
+                        description='benchmarking-creo',
+                        job_options={'driver-memory': '1g'}
+                        )
+
+    output_cube = xr.open_dataset(output_path)
+    output_dict = calculate_cube_statistics(output_cube)
+    groundtruth_dict = extract_reference_statistics(scenario_name)
+
+    for val1, val2 in zip(output_dict, groundtruth_dict):
+        assert val1 == pytest.approx(val2, TOLERANCE)
 
 
 def test_apply_kernel(auth_connection, tmp_path):
@@ -68,7 +83,18 @@ def test_apply_kernel(auth_connection, tmp_path):
         factor=factor)
     
     # Excecute and Assert
-    execute_and_assert(cube, output_path, scenario_name)
+    cube.execute_batch(outputfile=output_path,
+                        title=scenario_name,
+                        description='benchmarking-creo',
+                        job_options={'driver-memory': '1g'}
+                        )
+
+    output_cube = xr.open_dataset(output_path)
+    output_dict = calculate_cube_statistics(output_cube)
+    groundtruth_dict = extract_reference_statistics(scenario_name)
+
+    for val1, val2 in zip(output_dict, groundtruth_dict):
+        assert val1 == pytest.approx(val2, TOLERANCE)
 
 
 def test_downsample_spatial(auth_connection, tmp_path):
@@ -90,7 +116,18 @@ def test_downsample_spatial(auth_connection, tmp_path):
         method='mean')
 
     # Excecute and assert
-    execute_and_assert(cube, output_path, scenario_name)
+    cube.execute_batch(outputfile=output_path,
+                        title=scenario_name,
+                        description='benchmarking-creo',
+                        job_options={'driver-memory': '1g'}
+                        )
+
+    output_cube = xr.open_dataset(output_path)
+    output_dict = calculate_cube_statistics(output_cube)
+    groundtruth_dict = extract_reference_statistics(scenario_name)
+
+    for val1, val2 in zip(output_dict, groundtruth_dict):
+        assert val1 == pytest.approx(val2, TOLERANCE)
 
 
 def test_upsample_spatial(auth_connection, tmp_path):
@@ -112,7 +149,18 @@ def test_upsample_spatial(auth_connection, tmp_path):
         method='mean')
     
     # Excecute and apply
-    execute_and_assert(cube, output_path, scenario_name)
+    cube.execute_batch(outputfile=output_path,
+                        title=scenario_name,
+                        description='benchmarking-creo',
+                        job_options={'driver-memory': '1g'}
+                        )
+
+    output_cube = xr.open_dataset(output_path)
+    output_dict = calculate_cube_statistics(output_cube)
+    groundtruth_dict = extract_reference_statistics(scenario_name)
+
+    for val1, val2 in zip(output_dict, groundtruth_dict):
+        assert val1 == pytest.approx(val2, TOLERANCE)
 
 
 def test_reduce_time(auth_connection, tmp_path):
@@ -134,7 +182,18 @@ def test_reduce_time(auth_connection, tmp_path):
         reducer='mean')
 
     # Excecute and assert
-    execute_and_assert(cube, output_path, scenario_name)
+    cube.execute_batch(outputfile=output_path,
+                        title=scenario_name,
+                        description='benchmarking-creo',
+                        job_options={'driver-memory': '1g'}
+                        )
+
+    output_cube = xr.open_dataset(output_path)
+    output_dict = calculate_cube_statistics(output_cube)
+    groundtruth_dict = extract_reference_statistics(scenario_name)
+
+    for val1, val2 in zip(output_dict, groundtruth_dict):
+        assert val1 == pytest.approx(val2, TOLERANCE)
 
 
 def test_mask_scl(auth_connection, tmp_path):
@@ -159,7 +218,18 @@ def test_mask_scl(auth_connection, tmp_path):
     cube.mask(cloud_mask)
 
     # Excecute and assert
-    execute_and_assert(cube, output_path, scenario_name)
+    cube.execute_batch(outputfile=output_path,
+                        title=scenario_name,
+                        description='benchmarking-creo',
+                        job_options={'driver-memory': '1g'}
+                        )
+
+    output_cube = xr.open_dataset(output_path)
+    output_dict = calculate_cube_statistics(output_cube)
+    groundtruth_dict = extract_reference_statistics(scenario_name)
+
+    for val1, val2 in zip(output_dict, groundtruth_dict):
+        assert val1 == pytest.approx(val2, TOLERANCE)
 
 
 def test_BAP(auth_connection, tmp_path):
@@ -231,5 +301,16 @@ def test_BAP(auth_connection, tmp_path):
 
     
     # Excecute and assert
-    execute_and_assert(cube, output_path, scenario_name)
+    cube.execute_batch(outputfile=output_path,
+                        title=scenario_name,
+                        description='benchmarking-creo',
+                        job_options={'driver-memory': '1g'}
+                        )
+
+    output_cube = xr.open_dataset(output_path)
+    output_dict = calculate_cube_statistics(output_cube)
+    groundtruth_dict = extract_reference_statistics(scenario_name)
+
+    for val1, val2 in zip(output_dict, groundtruth_dict):
+        assert val1 == pytest.approx(val2, TOLERANCE)
     
