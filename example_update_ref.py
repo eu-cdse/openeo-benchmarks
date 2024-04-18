@@ -28,5 +28,3 @@ cube = auth_connection.load_collection(
 
 
 execute_and_update_reference(cube, output_path, scenario_name, json_name)
-
- 
