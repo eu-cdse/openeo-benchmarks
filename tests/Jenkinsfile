@@ -4,10 +4,11 @@
 pythonPipeline {
   package_name = "openeo-cdse-benchmarks"
   test_module_name = "."
+  pep440 = true
   wipeout_workspace = true
   python_version = ["3.10"]
   upload_dev_wheels = false
-  pep440 = true
+  run_tests = false
   build_wheel = false
   extra_env_variables = [
     "OPENEO_AUTH_METHOD=client_credentials",
