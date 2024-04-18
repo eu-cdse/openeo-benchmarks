@@ -57,8 +57,10 @@ def test_aggregate_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    for val1, val2 in zip(output_dict, groundtruth_dict):
-        assert val1 == pytest.approx(val2, TOLERANCE)
+    assert output_dict == {
+    k: pytest.approx(v, rel=TOLERANCE)
+    for k,v in groundtruth_dict.items()
+    }
 
 
 def test_apply_kernel(auth_connection, tmp_path):
@@ -95,8 +97,10 @@ def test_apply_kernel(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    for val1, val2 in zip(output_dict, groundtruth_dict):
-        assert val1 == pytest.approx(val2, TOLERANCE)
+    assert output_dict == {
+    k: pytest.approx(v, rel=TOLERANCE)
+    for k,v in groundtruth_dict.items()
+    }
 
 
 def test_downsample_spatial(auth_connection, tmp_path):
@@ -128,8 +132,10 @@ def test_downsample_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    for val1, val2 in zip(output_dict, groundtruth_dict):
-        assert val1 == pytest.approx(val2, TOLERANCE)
+    assert output_dict == {
+    k: pytest.approx(v, rel=TOLERANCE)
+    for k,v in groundtruth_dict.items()
+    }
 
 
 def test_upsample_spatial(auth_connection, tmp_path):
@@ -161,8 +167,10 @@ def test_upsample_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    for val1, val2 in zip(output_dict, groundtruth_dict):
-        assert val1 == pytest.approx(val2, TOLERANCE)
+    assert output_dict == {
+    k: pytest.approx(v, rel=TOLERANCE)
+    for k,v in groundtruth_dict.items()
+    }
 
 
 def test_reduce_time(auth_connection, tmp_path):
@@ -194,8 +202,10 @@ def test_reduce_time(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    for val1, val2 in zip(output_dict, groundtruth_dict):
-        assert val1 == pytest.approx(val2, TOLERANCE)
+    assert output_dict == {
+    k: pytest.approx(v, rel=TOLERANCE)
+    for k,v in groundtruth_dict.items()
+    }
 
 
 def test_mask_scl(auth_connection, tmp_path):
@@ -230,8 +240,10 @@ def test_mask_scl(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    for val1, val2 in zip(output_dict, groundtruth_dict):
-        assert val1 == pytest.approx(val2, TOLERANCE)
+    assert output_dict == {
+    k: pytest.approx(v, rel=TOLERANCE)
+    for k,v in groundtruth_dict.items()
+    }
 
 
 def test_BAP(auth_connection, tmp_path):
@@ -313,6 +325,8 @@ def test_BAP(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    for val1, val2 in zip(output_dict, groundtruth_dict):
-        assert val1 == pytest.approx(val2, TOLERANCE)
+    assert output_dict == {
+    k: pytest.approx(v, rel=TOLERANCE)
+    for k,v in groundtruth_dict.items()
+    }
     
