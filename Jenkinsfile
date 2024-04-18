@@ -7,7 +7,7 @@ pythonPipeline {
   pep440 = true
   wipeout_workspace = true
   python_version = ["3.10"]
-  tests_location = "test_regression.py"
+  tests_location = "tests"
   build_wheel = false
   upload_dev_wheels = false
   run_tests = false
