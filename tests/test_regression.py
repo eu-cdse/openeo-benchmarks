@@ -2,12 +2,13 @@
 import geojson
 import geopandas as gpd
 import numpy as np
-import pytest
 import requests
 import xarray as xr
 from openeo.processes import if_, is_nan
 
 from .utils import calculate_cube_statistics, extract_reference_statistics
+from .testing import approxify
+
 from .utils_BAP import (
     aggregate_BAP_scores,
     calculate_cloud_coverage_score,
@@ -18,23 +19,7 @@ from .utils_BAP import (
 )
 
 
-def assert_dicts_approx_equal(dict1: dict, dict2: dict, tolerance: float = 0.01) -> None:
-    """
-    Compares two dictionaries for approximate equality.
-
-    Args:
-        dict1 (dict): The first dictionary to compare.
-        dict2 (dict): The second dictionary to compare.
-        tolerance (float, optional): The relative tolerance for comparing values. Defaults to 0.01.
-
-    Raises:
-        AssertionError: If the dictionaries are not approximately equal within the specified tolerance.
-    """    
-    assert set(dict1.keys()) == set(dict2.keys()), "The keys in both dictionaries must match."
-    
-    for key in dict1.keys():
-        assert pytest.approx(dict1[key], rel=tolerance) == dict2[key], "Values for key '{key}' are not approximately equal."
-    
+TOLERANCE = 0.01
 
 #Below we list the regression tests on common operations in openEO.
 #Note, the assert is specifically kept in the test file for tracibility in Jenkins
@@ -74,7 +59,7 @@ def test_aggregate_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert_dicts_approx_equal(output_dict, groundtruth_dict)
+    assert output_dict == approxify(groundtruth_dict, rel=TOLERANCE)
 
 
 def test_apply_kernel(auth_connection, tmp_path):
@@ -111,7 +96,7 @@ def test_apply_kernel(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert_dicts_approx_equal(output_dict, groundtruth_dict)
+    assert output_dict == approxify(groundtruth_dict, rel=TOLERANCE)
 
 
 
@@ -144,7 +129,7 @@ def test_downsample_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert_dicts_approx_equal(output_dict, groundtruth_dict)
+    assert output_dict == approxify(groundtruth_dict, rel=TOLERANCE)
 
 
 
@@ -177,7 +162,7 @@ def test_upsample_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert_dicts_approx_equal(output_dict, groundtruth_dict)
+    assert output_dict == approxify(groundtruth_dict, rel=TOLERANCE)
 
 
 
@@ -210,7 +195,7 @@ def test_reduce_time(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert_dicts_approx_equal(output_dict, groundtruth_dict)
+    assert output_dict == approxify(groundtruth_dict, rel=TOLERANCE)
 
 
 
@@ -246,7 +231,7 @@ def test_mask_scl(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert_dicts_approx_equal(output_dict, groundtruth_dict)
+    assert output_dict == approxify(groundtruth_dict, rel=TOLERANCE)
 
 
 
@@ -329,7 +314,7 @@ def test_BAP(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert_dicts_approx_equal(output_dict, groundtruth_dict)
+    assert output_dict == approxify(groundtruth_dict, rel=TOLERANCE)
 
     
 
