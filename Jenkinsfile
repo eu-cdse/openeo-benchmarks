@@ -10,6 +10,7 @@ pythonPipeline {
   tests_location = "tests"
   run_tests = true
   test_coverage = false
+  pylint = false
   build_wheel = false
   upload_dev_wheels = false
   extra_env_variables = [
