@@ -17,16 +17,29 @@ from .utils_BAP import (
     create_rank_mask,
 )
 
-TOLERANCE = 0.01 #max allowed deviation
 
-def compare_dicts(dict1, dict2, tolerance = TOLERANCE):
-    """Custom function to compare dictionaries."""
-    if set(dict1.keys()) != set(dict2.keys()):
-        return False
+def compare_dicts(dict1: dict, dict2: dict, tolerance: float = 0.01) -> None:
+    """
+    Compares two dictionaries for approximate equality.
+
+    Args:
+        dict1 (dict): The first dictionary to compare.
+        dict2 (dict): The second dictionary to compare.
+        tolerance (float, optional): The relative tolerance for comparing values. Defaults to 0.01.
+
+    Returns:
+        bool: True if the dictionaries are approximately equal within the specified tolerance, False otherwise.
+        
+    Raises:
+        TypeError: If either dict1 or dict2 is not a dictionary.
+    """
+    assert isinstance(dict1, dict) or not isinstance(dict2, dict):
+    
+    assert set(dict1.keys()) == set(dict2.keys()), "The keys in both dictionaries must match."
+    
     for key in dict1.keys():
-        if dict1[key] != pytest.approx(dict2[key], rel = tolerance):
-            return False
-    return True
+        assert pytest.approx(dict1[key], rel=tolerance) == dict2[key], "Values for key '{key}' are not approximately equal."
+    
 
 #Below we list the regression tests on common operations in openEO.
 #Note, the assert is specifically kept in the test file for tracibility in Jenkins
