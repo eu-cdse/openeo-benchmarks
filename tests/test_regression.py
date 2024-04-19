@@ -19,6 +19,15 @@ from .utils_BAP import (
 
 TOLERANCE = 0.01 #max allowed deviation
 
+def compare_dicts(dict1, dict2, tolerance = TOLERANCE):
+    """Custom function to compare dictionaries."""
+    if set(dict1.keys()) != set(dict2.keys()):
+        return False
+    for key in dict1.keys():
+        if dict1[key] != pytest.approx(dict2[key], rel = tolerance):
+            return False
+    return True
+
 #Below we list the regression tests on common operations in openEO.
 #Note, the assert is specifically kept in the test file for tracibility in Jenkins
 
@@ -57,10 +66,7 @@ def test_aggregate_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert output_dict == {
-    k: pytest.approx(v, rel=TOLERANCE)
-    for k,v in groundtruth_dict.items()
-    }
+    compare_dicts(output_dict, groundtruth_dict)
 
 
 def test_apply_kernel(auth_connection, tmp_path):
@@ -97,10 +103,8 @@ def test_apply_kernel(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert output_dict == {
-    k: pytest.approx(v, rel=TOLERANCE)
-    for k,v in groundtruth_dict.items()
-    }
+    compare_dicts(output_dict, groundtruth_dict)
+
 
 
 def test_downsample_spatial(auth_connection, tmp_path):
@@ -132,10 +136,8 @@ def test_downsample_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert output_dict == {
-    k: pytest.approx(v, rel=TOLERANCE)
-    for k,v in groundtruth_dict.items()
-    }
+    compare_dicts(output_dict, groundtruth_dict)
+
 
 
 def test_upsample_spatial(auth_connection, tmp_path):
@@ -167,10 +169,8 @@ def test_upsample_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert output_dict == {
-    k: pytest.approx(v, rel=TOLERANCE)
-    for k,v in groundtruth_dict.items()
-    }
+    compare_dicts(output_dict, groundtruth_dict)
+
 
 
 def test_reduce_time(auth_connection, tmp_path):
@@ -202,10 +202,8 @@ def test_reduce_time(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert output_dict == {
-    k: pytest.approx(v, rel=TOLERANCE)
-    for k,v in groundtruth_dict.items()
-    }
+    compare_dicts(output_dict, groundtruth_dict)
+
 
 
 def test_mask_scl(auth_connection, tmp_path):
@@ -240,10 +238,8 @@ def test_mask_scl(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert output_dict == {
-    k: pytest.approx(v, rel=TOLERANCE)
-    for k,v in groundtruth_dict.items()
-    }
+    compare_dicts(output_dict, groundtruth_dict)
+
 
 
 def test_BAP(auth_connection, tmp_path):
@@ -325,8 +321,7 @@ def test_BAP(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    assert output_dict == {
-    k: pytest.approx(v, rel=TOLERANCE)
-    for k,v in groundtruth_dict.items()
-    }
+    compare_dicts(output_dict, groundtruth_dict)
+
     
+
