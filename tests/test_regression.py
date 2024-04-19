@@ -18,7 +18,7 @@ from .utils_BAP import (
 )
 
 
-def compare_dicts(dict1: dict, dict2: dict, tolerance: float = 0.01) -> None:
+def assert_dicts_approx_equal(dict1: dict, dict2: dict, tolerance: float = 0.01) -> None:
     """
     Compares two dictionaries for approximate equality.
 
@@ -27,11 +27,8 @@ def compare_dicts(dict1: dict, dict2: dict, tolerance: float = 0.01) -> None:
         dict2 (dict): The second dictionary to compare.
         tolerance (float, optional): The relative tolerance for comparing values. Defaults to 0.01.
 
-    Returns:
-        bool: True if the dictionaries are approximately equal within the specified tolerance, False otherwise.
-        
     Raises:
-        TypeError: If either dict1 or dict2 is not a dictionary.
+        AssertionError: If the dictionaries are not approximately equal within the specified tolerance.
     """
     assert isinstance(dict1, dict) or not isinstance(dict2, dict):
     
@@ -79,7 +76,7 @@ def test_aggregate_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    compare_dicts(output_dict, groundtruth_dict)
+    assert_dicts_approx_equal(output_dict, groundtruth_dict)
 
 
 def test_apply_kernel(auth_connection, tmp_path):
@@ -116,7 +113,7 @@ def test_apply_kernel(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    compare_dicts(output_dict, groundtruth_dict)
+    assert_dicts_approx_equal(output_dict, groundtruth_dict)
 
 
 
@@ -149,7 +146,7 @@ def test_downsample_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    compare_dicts(output_dict, groundtruth_dict)
+    assert_dicts_approx_equal(output_dict, groundtruth_dict)
 
 
 
@@ -182,7 +179,7 @@ def test_upsample_spatial(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    compare_dicts(output_dict, groundtruth_dict)
+    assert_dicts_approx_equal(output_dict, groundtruth_dict)
 
 
 
@@ -215,7 +212,7 @@ def test_reduce_time(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    compare_dicts(output_dict, groundtruth_dict)
+    assert_dicts_approx_equal(output_dict, groundtruth_dict)
 
 
 
@@ -251,7 +248,7 @@ def test_mask_scl(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    compare_dicts(output_dict, groundtruth_dict)
+    assert_dicts_approx_equal(output_dict, groundtruth_dict)
 
 
 
@@ -334,7 +331,7 @@ def test_BAP(auth_connection, tmp_path):
     output_dict = calculate_cube_statistics(output_cube)
     groundtruth_dict = extract_reference_statistics(scenario_name)
 
-    compare_dicts(output_dict, groundtruth_dict)
+    assert_dicts_approx_equal(output_dict, groundtruth_dict)
 
     
 
