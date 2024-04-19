@@ -29,9 +29,7 @@ def assert_dicts_approx_equal(dict1: dict, dict2: dict, tolerance: float = 0.01)
 
     Raises:
         AssertionError: If the dictionaries are not approximately equal within the specified tolerance.
-    """
-    assert isinstance(dict1, dict) or not isinstance(dict2, dict):
-    
+    """    
     assert set(dict1.keys()) == set(dict2.keys()), "The keys in both dictionaries must match."
     
     for key in dict1.keys():
