@@ -22,4 +22,5 @@ pythonPipeline {
   extra_env_secrets = [
     'OPENEO_AUTH_CLIENT_SECRET': 'TAP/big_data_services/openeo/cdse-service-accounts/openeo-cdse-ci-service-account client_secret',
   ]
+  pipeline_triggers = [cron('H 0 * * *')]
 }
