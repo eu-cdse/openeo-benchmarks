@@ -24,12 +24,12 @@
         "scenario_name": "apply_spatial_kernel",
         "reference_data": {
             "B02": {
-                "mean": -344918049.54,
+                "mean": -82350315.86,
                 "min": -2147483648.0,
-                "max": 20671.27,
-                "quantile25": 472.57,
-                "quantile50": 1034.74,
-                "quantile75": 5288.86
+                "max": 20648.26,
+                "quantile25": 645.02,
+                "quantile50": 1510.86,
+                "quantile75": 6052.99
             }
         }
     },
@@ -145,60 +145,60 @@
         "scenario_name": "BAP",
         "reference_data": {
             "B02": {
-                "mean": 567.49,
+                "mean": 570.78,
                 "min": -633.0,
                 "max": 6668.0,
                 "quantile25": 338.0,
-                "quantile50": 463.0,
-                "quantile75": 707.0
+                "quantile50": 465.0,
+                "quantile75": 713.0
             },
             "B03": {
-                "mean": 810.9,
+                "mean": 814.03,
                 "min": 118.0,
-                "max": 5194.0,
+                "max": 6499.0,
                 "quantile25": 531.0,
                 "quantile50": 726.0,
                 "quantile75": 981.0
             },
             "B04": {
-                "mean": 756.9,
+                "mean": 759.61,
                 "min": -55.0,
-                "max": 5305.0,
-                "quantile25": 373.0,
-                "quantile50": 574.0,
-                "quantile75": 983.0
+                "max": 6741.0,
+                "quantile25": 374.0,
+                "quantile50": 575.0,
+                "quantile75": 986.0
             },
             "B05": {
-                "mean": 1265.01,
-                "min": 192.0,
-                "max": 6017.0,
-                "quantile25": 893.0,
-                "quantile50": 1188.0,
-                "quantile75": 1525.0
+                "mean": 1268.45,
+                "min": 178.0,
+                "max": 6841.0,
+                "quantile25": 896.0,
+                "quantile50": 1190.0,
+                "quantile75": 1526.0
             },
             "B06": {
-                "mean": 2531.81,
+                "mean": 2537.43,
                 "min": 112.0,
-                "max": 7041.0,
-                "quantile25": 1945.0,
-                "quantile50": 2627.0,
-                "quantile75": 3139.0
+                "max": 8049.0,
+                "quantile25": 1950.0,
+                "quantile50": 2632.0,
+                "quantile75": 3142.0
             },
             "B07": {
-                "mean": 2970.58,
+                "mean": 2976.0,
                 "min": 130.0,
-                "max": 7284.0,
-                "quantile25": 2168.0,
-                "quantile50": 3014.0,
-                "quantile75": 3752.0
+                "max": 8397.0,
+                "quantile25": 2174.0,
+                "quantile50": 3020.0,
+                "quantile75": 3756.0
             },
             "B08": {
-                "mean": 3168.35,
+                "mean": 3175.78,
                 "min": -195.0,
-                "max": 8800.0,
-                "quantile25": 2302.0,
-                "quantile50": 3214.0,
-                "quantile75": 4016.0
+                "max": 10010.0,
+                "quantile25": 2310.0,
+                "quantile50": 3221.0,
+                "quantile75": 4020.0
             }
         }
     }
