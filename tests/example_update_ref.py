@@ -1,10 +1,7 @@
 #%%
 from pathlib import Path
-
 import openeo
-
 from .utils import execute_and_update_reference
-
 
 def main():
     auth_connection = openeo.connect(url="openeo.dataspace.copernicus.eu").authenticate_oidc()
