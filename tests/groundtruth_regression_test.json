@@ -185,20 +185,20 @@
                 "quantile75": 3142.0
             },
             "B07": {
-                "mean": 2970.58,
+                "mean": 2976.0,
                 "min": 130.0,
-                "max": 7284.0,
-                "quantile25": 2168.0,
-                "quantile50": 3014.0,
-                "quantile75": 3752.0
+                "max": 8397.0,
+                "quantile25": 2174.0,
+                "quantile50": 3020.0,
+                "quantile75": 3756.0
             },
             "B08": {
-                "mean": 3168.35,
+                "mean": 3175.78,
                 "min": -195.0,
-                "max": 8800.0,
-                "quantile25": 2302.0,
-                "quantile50": 3214.0,
-                "quantile75": 4016.0
+                "max": 10010.0,
+                "quantile25": 2310.0,
+                "quantile50": 3221.0,
+                "quantile75": 4020.0
             }
         }
     }
